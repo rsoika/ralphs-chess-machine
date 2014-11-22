@@ -4,7 +4,10 @@ import com.soika.chess.exceptions.IllegalBoardException;
 import com.soika.chess.exceptions.IllegalMoveException;
 import com.soika.chess.figures.AbstractFigure;
 import com.soika.chess.figures.Bishop;
+import com.soika.chess.figures.King;
+import com.soika.chess.figures.Knight;
 import com.soika.chess.figures.Pawn;
+import com.soika.chess.figures.Queen;
 import com.soika.chess.figures.Rook;
 
 /**
@@ -91,10 +94,10 @@ public class Board {
 	 * @param figure
 	 *            -6<6
 	 * @throws IllegalMoveException
-	 * @throws IllegalBoardException 
+	 * @throws IllegalBoardException
 	 */
 	public void placeFigure(int line, int row, byte figure)
-			throws  IllegalBoardException {
+			throws IllegalBoardException {
 
 		// validate field
 		if (line < 1 || line > 8 || row < 1 || row > 8) {
@@ -115,23 +118,32 @@ public class Board {
 		return setup[field];
 	}
 
-	public AbstractFigure createFigure(String field) throws IllegalBoardException  {
+	public AbstractFigure createFigure(String field)
+			throws IllegalBoardException {
 		// convert field string
 		field = field.toLowerCase();
 		int line = field.charAt(0) - 'a' + 1;
 		int row = field.charAt(1) - '1' + 1;
 
 		byte figure = this.getFigure(line, row);
-		if (figure == Board.ROOK_ME || figure == Board.ROOK_YOURS) {
-			return new Rook(this, line, row,figure);
-		}
 		if (figure == Board.PAWN_ME || figure == Board.PAWN_YOURS) {
-			return new Pawn(this, line, row,figure);
+			return new Pawn(this, line, row, figure);
+		}
+		if (figure == Board.ROOK_ME || figure == Board.ROOK_YOURS) {
+			return new Rook(this, line, row, figure);
 		}
 		if (figure == Board.BISHOP_ME || figure == Board.BISHOP_YOURS) {
-			return new Bishop(this, line, row,figure);
+			return new Bishop(this, line, row, figure);
 		}
-
+		if (figure == Board.KNIGHT_ME || figure == Board.KNIGHT_YOURS) {
+			return new Knight(this, line, row, figure);
+		}
+		if (figure == Board.QUEEN_ME || figure == Board.QUEEN_YOURS) {
+			return new Queen(this, line, row, figure);
+		}
+		if (figure == Board.KING_ME || figure == Board.KING_YOURS) {
+			return new King(this, line, row, figure);
+		}
 
 		return null;
 	}
@@ -142,7 +154,7 @@ public class Board {
 	 * @param field
 	 * @return
 	 * @throws IllegalMoveException
-	 * @throws IllegalBoardException 
+	 * @throws IllegalBoardException
 	 */
 	public static byte getField(String field) throws IllegalBoardException {
 
