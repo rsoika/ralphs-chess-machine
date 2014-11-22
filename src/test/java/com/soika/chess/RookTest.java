@@ -37,7 +37,7 @@ public class RookTest {
 
 		try {
 			board.placeFigure("A1", Board.ROOK_ME);
-			Rook rook = (Rook) board.getFigure("A1");
+			Rook rook = (Rook) board.createFigure("A1");
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("A2")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("A3")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("A4")));
@@ -69,7 +69,7 @@ public class RookTest {
 
 		try {
 			board.placeFigure("h8", Board.ROOK_ME);
-			Rook rook = (Rook) board.getFigure("H8");
+			Rook rook = (Rook) board.createFigure("H8");
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("h2")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("h3")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("h4")));
@@ -107,7 +107,7 @@ public class RookTest {
 
 		try {
 			board.placeFigure("B4", Board.ROOK_ME);
-			Rook rook = (Rook) board.getFigure("B4");
+			Rook rook = (Rook) board.createFigure("B4");
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("B3")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("B2")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("B1")));
@@ -125,6 +125,82 @@ public class RookTest {
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("g4")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("D4")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("H4")));
+
+			
+			
+			Assert.assertFalse(rook.getMoves().contains(Board.getField("B4")));
+		
+		} catch (IllegalBoardException e) {
+			fail();
+			e.printStackTrace();
+		}
+
+	}
+	
+	
+	
+	
+
+	@Test
+	public void testB2BlockedByMe() {
+
+		try {
+			board.placeFigure("B4", Board.ROOK_ME);
+			board.placeFigure("F4", Board.PAWN_ME);
+			Rook rook = (Rook) board.createFigure("B4");
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("B3")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("B2")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("B1")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("B5")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("B6")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("B7")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("B8")));
+
+
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("A4")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("C4")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("D4")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("E4")));
+			Assert.assertFalse(rook.getMoves().contains(Board.getField("f4")));
+			Assert.assertFalse(rook.getMoves().contains(Board.getField("g4")));
+			Assert.assertFalse(rook.getMoves().contains(Board.getField("H4")));
+
+			
+			
+			Assert.assertFalse(rook.getMoves().contains(Board.getField("B4")));
+		
+		} catch (IllegalBoardException e) {
+			fail();
+			e.printStackTrace();
+		}
+
+	}
+
+	
+
+	@Test
+	public void testB2BlockedByYours() {
+
+		try {
+			board.placeFigure("B4", Board.ROOK_ME);
+			board.placeFigure("F4", Board.PAWN_YOURS);
+			Rook rook = (Rook) board.createFigure("B4");
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("B3")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("B2")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("B1")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("B5")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("B6")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("B7")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("B8")));
+
+
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("A4")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("C4")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("D4")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("E4")));
+			Assert.assertTrue(rook.getMoves().contains(Board.getField("f4")));
+			Assert.assertFalse(rook.getMoves().contains(Board.getField("g4")));
+			Assert.assertFalse(rook.getMoves().contains(Board.getField("H4")));
 
 			
 			

@@ -2,7 +2,6 @@ package com.soika.chess.figures;
 
 import com.soika.chess.Board;
 import com.soika.chess.exceptions.IllegalBoardException;
-import com.soika.chess.exceptions.IllegalMoveException;
 
 public class Rook extends AbstractFigure {
 
@@ -24,18 +23,14 @@ public class Rook extends AbstractFigure {
 	   B5
      * </code>
 	 * 
-	 * @throws IllegalMoveException
+	 * @throws IllegalBoardException
 	 */
 
-	public Rook(Board aboard, int line, int row) throws IllegalBoardException {
-		super(aboard, line, row);
+	public Rook(Board aboard, int line, int row, byte figureType) throws IllegalBoardException {
+		super(aboard, line, row,figureType);
 	}
 
 	
-	@Override
-	public byte getFigureType() {
-		return Board.ROOK_ME;
-	}
 
 	@Override
 	public void computeMoves() {
@@ -53,6 +48,9 @@ public class Rook extends AbstractFigure {
 					if (board.getFigure(i, r) <= 0) {
 						this.addMove(i, r);
 					}
+					// blocked?
+					if (board.getFigure(i, r) != 0)
+						break;
 				}
 			}
 			if (l > 1) {
@@ -61,6 +59,9 @@ public class Rook extends AbstractFigure {
 					if (board.getFigure(i, r) <= 0) {
 						this.addMove(i, r);
 					}
+					// blocked?
+					if (board.getFigure(i, r) != 0)
+						break;
 				}
 			}
 			
@@ -71,6 +72,9 @@ public class Rook extends AbstractFigure {
 					if (board.getFigure(l,i) <= 0) {
 						this.addMove(l,i);
 					}
+					// blocked?
+					if (board.getFigure(l,i) != 0)
+						break;
 				}
 			}
 			if (r > 1) {
@@ -79,6 +83,9 @@ public class Rook extends AbstractFigure {
 					if (board.getFigure(l,i) <= 0) {
 						this.addMove( l,i);
 					}
+					// blocked?
+					if (board.getFigure(l,i) != 0)
+						break;
 				}
 			}
 

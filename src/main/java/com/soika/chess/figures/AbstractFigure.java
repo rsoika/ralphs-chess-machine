@@ -39,15 +39,16 @@ public abstract class AbstractFigure {
 		super();
 	}
 
-	public AbstractFigure(Board aboard, int line, int row) throws IllegalBoardException {
+	public AbstractFigure(Board aboard, int line, int row, byte figureType) throws IllegalBoardException {
 		super();
 		// validate params
-		if (aboard.getFigure(line, row)!=this.getFigureType()) {
+		if (aboard.getFigure(line, row)!=figureType) {
 			throw new IllegalBoardException();
 		}
 		
 		this.row=(byte) row;
 		this.line=(byte) line;
+		this.figureType=figureType;
 
 		reset(aboard);
 
@@ -55,6 +56,16 @@ public abstract class AbstractFigure {
 
 	public Board getBoard() {
 		return board;
+	}
+
+	/**
+	 * Abstract method to be overwritten be Figure classes. The method returns
+	 * the figure type
+	 * 
+	 * @return
+	 */
+	public byte getFigureType() {
+		return figureType;
 	}
 
 	public byte getLine() {
@@ -122,12 +133,4 @@ public abstract class AbstractFigure {
 	 * the list of possible moves on the given board
 	 */
 	public abstract void computeMoves();
-
-	/**
-	 * Abstract method to be overwritten be Figure classes. The method returns
-	 * the figure type
-	 * 
-	 * @return
-	 */
-	public abstract byte getFigureType();
 }
