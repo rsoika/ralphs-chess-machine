@@ -1,4 +1,4 @@
-package com.soika.chess;
+package com.soika.chess.exceptions;
 
 public class IllegalMoveException extends Exception {
 

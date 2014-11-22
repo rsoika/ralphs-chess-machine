@@ -1,31 +1,49 @@
 package com.soika.chess;
 
+import com.soika.chess.exceptions.IllegalBoardException;
+import com.soika.chess.exceptions.IllegalMoveException;
+import com.soika.chess.figures.AbstractFigure;
+import com.soika.chess.figures.Rook;
+
 /**
  * Definition of a chess board
  * 
  * http://www.wikihow.com/Play-Chess-for-Beginners
  * 
+ * <code>
+	  ♔♕♖♗♘♙♚♛♜♝♞♟
+	  ┌───────────────┐
+	  │♜ ♞ ♝ ♚ ♛ ♝ ♞ ♜│
+	  │♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟│
+	  │               │
+	  │               │
+	  │               │
+	  │               │
+	  │♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙│
+	  │♖ ♘ ♗ ♔ ♕ ♗ ♘ ♖│
+	  └───────────────┘
+ * </code>
  * 
  * @author rsoika
  *
  */
 public class Board {
 
-	final static byte FREE = 0;
+	public final static byte FREE = 0;
 
-	final static byte PAWN_ME = 1;
-	final static byte BISHOP_ME = 2;
-	final static byte KNIGHT_ME = 3;
-	final static byte ROOK_ME = 4;
-	final static byte QUEEN_ME = 5;
-	final static byte KING_ME = 6;
+	public final static byte PAWN_ME = 1;
+	public final static byte BISHOP_ME = 2;
+	public final static byte KNIGHT_ME = 3;
+	public final static byte ROOK_ME = 4;
+	public final static byte QUEEN_ME = 5;
+	public final static byte KING_ME = 6;
 
-	final static byte PAWN_YOURS = -1;
-	final static byte BISHOP_YOURS = -2;
-	final static byte KNIGHT_YOURS = -3;
-	final static byte ROOK_YOURS = -4;
-	final static byte QUEEN_YOURS = -5;
-	final static byte KING_YOURS = -6;
+	public final static byte PAWN_YOURS = -1;
+	public final static byte BISHOP_YOURS = -2;
+	public final static byte KNIGHT_YOURS = -3;
+	public final static byte ROOK_YOURS = -4;
+	public final static byte QUEEN_YOURS = -5;
+	public final static byte KING_YOURS = -6;
 
 	byte[] setup = null;
 
@@ -41,9 +59,11 @@ public class Board {
 	 * <code>
 	   		placeFigure('E3',PAWN_ME);
 	 * </code>
+	 * 
+	 * @throws IllegalBoardException
 	 */
 	public void placeFigure(String field, byte figure)
-			throws IllegalMoveException {
+			throws IllegalBoardException {
 
 		// convert field stringg
 		field = field.toLowerCase();
@@ -52,8 +72,8 @@ public class Board {
 
 		try {
 			placeFigure(line, row, figure);
-		} catch (IllegalMoveException e) {
-			throw new IllegalMoveException("Illegal move " + field + ":"
+		} catch (IllegalBoardException e) {
+			throw new IllegalBoardException("Illegal move " + field + ":"
 					+ figure, e);
 		}
 
@@ -69,24 +89,78 @@ public class Board {
 	 * @param figure
 	 *            -6<6
 	 * @throws IllegalMoveException
+	 * @throws IllegalBoardException 
 	 */
 	public void placeFigure(int line, int row, byte figure)
-			throws IllegalMoveException {
+			throws  IllegalBoardException {
 
 		// validate field
 		if (line < 1 || line > 8 || row < 1 || row > 8) {
-			throw new IllegalMoveException();
+			throw new IllegalBoardException();
 		}
 
 		// validate figure
 		if (figure < -6 || figure > 6) {
-			throw new IllegalMoveException();
+			throw new IllegalBoardException();
 		}
 
-		byte field = (byte) (row * line);
-
 		// set figure
-		setup[field - 1] = figure;
+		setup[getField(line, row)] = figure;
 	}
 
+	public byte getFigure(int line, int row) throws IllegalBoardException {
+		byte field = getField(line, row);
+		return setup[field];
+	}
+
+	public AbstractFigure getFigure(String field) throws IllegalBoardException  {
+		// convert field string
+		field = field.toLowerCase();
+		int line = field.charAt(0) - 'a' + 1;
+		int row = field.charAt(1) - '1' + 1;
+
+		byte figure = this.getFigure(line, row);
+		if (figure == Board.ROOK_ME)
+			return new Rook(this, line, row);
+
+		return null;
+	}
+
+	/**
+	 * Static method to convert field definition into byte
+	 * 
+	 * @param field
+	 * @return
+	 * @throws IllegalMoveException
+	 * @throws IllegalBoardException 
+	 */
+	public static byte getField(String field) throws IllegalBoardException {
+
+		// convert field string
+		field = field.toLowerCase();
+		int line = field.charAt(0) - 'a' + 1;
+		int row = field.charAt(1) - '1' + 1;
+
+		return getField(line, row);
+
+	}
+
+	/**
+	 * Static method to convert field definition into byte
+	 * 
+	 * @param field
+	 * @return
+	 * @throws IllegalMoveException
+	 */
+	public static byte getField(int line, int row) throws IllegalBoardException {
+		// validate field
+		if (line < 1 || line > 8 || row < 1 || row > 8) {
+			throw new IllegalBoardException();
+		}
+
+		line--;
+		row--;
+		return (byte) (line + (row * 8));
+
+	}
 }
