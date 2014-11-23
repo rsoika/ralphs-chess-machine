@@ -161,6 +161,13 @@ public class BoardTest {
 		Assert.assertTrue(1 == Board.rowFromIndex((byte) 7));
 		Assert.assertTrue(2 == Board.rowFromIndex((byte) 8));
 		Assert.assertTrue(8 == Board.rowFromIndex((byte) 63));
+		
+		
+		
+		//49=B7
+		Assert.assertTrue(2 == Board.lineFromIndex((byte) 49));
+		Assert.assertTrue(7 == Board.rowFromIndex((byte) 49));
+		
 
 	}
 }

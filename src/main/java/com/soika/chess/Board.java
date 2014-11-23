@@ -166,6 +166,20 @@ public class Board {
 	}
 
 	/**
+	 * This method moves a figure form one field to another. No validation is
+	 * performed here.
+	 * 
+	 * @param from
+	 * @param to
+	 * @throws IllegalBoardException
+	 */
+	public void move(byte from, byte to) {
+		byte figure = setup[from];
+		setup[from] = 0;
+		setup[to] = figure;
+	}
+
+	/**
 	 * Places a figure on the board. The field is defined by a string by a char
 	 * A-H and a number 1-8
 	 * 
