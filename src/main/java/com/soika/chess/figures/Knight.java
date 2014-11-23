@@ -48,13 +48,13 @@ public class Knight extends AbstractFigure {
 			if (r < 7) {
 				if (l > 1) {
 					// possible move
-					if (board.getFigure(l - 1, r + 2) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l - 1, r + 2))) {
 						this.addMove(l - 1, r + 2);
 					}
 				}
 				if (l < 8) {
 					// possible move
-					if (board.getFigure(l + 1, r + 2) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l + 1, r + 2))) {
 						this.addMove(l + 1, r + 2);
 					}
 				}
@@ -64,13 +64,13 @@ public class Knight extends AbstractFigure {
 			if (r < 8) {
 				if (l > 2) {
 					// possible move
-					if (board.getFigure(l - 2, r + 1) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l - 2, r + 1) )) {
 						this.addMove(l - 2, r + 1);
 					}
 				}
 				if (l < 7) {
 					// possible move
-					if (board.getFigure(l + 2, r + 1) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l + 2, r + 1) )) {
 						this.addMove(l + 2, r + 1);
 					}
 				}
@@ -80,13 +80,13 @@ public class Knight extends AbstractFigure {
 			if (r > 2) {
 				if (l > 1) {
 					// possible move
-					if (board.getFigure(l - 1, r - 2) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l - 1, r - 2) )) {
 						this.addMove(l - 1, r - 2);
 					}
 				}
 				if (l < 8) {
 					// possible move
-					if (board.getFigure(l + 1, r - 2) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l + 1, r - 2) )) {
 						this.addMove(l + 1, r - 2);
 					}
 				}
@@ -96,13 +96,13 @@ public class Knight extends AbstractFigure {
 			if (r > 1) {
 				if (l > 2) {
 					// possible move
-					if (board.getFigure(l - 2, r - 1) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l - 2, r - 1) )) {
 						this.addMove(l - 2, r - 1);
 					}
 				}
 				if (l < 7) {
 					// possible move
-					if (board.getFigure(l + 2, r - 1) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l + 2, r - 1))) {
 						this.addMove(l + 2, r - 1);
 					}
 				}

@@ -40,30 +40,65 @@ public class Pawn extends AbstractFigure {
 
 		try {
 
-			/* Compute forward move... */
-			if (r == 2) {
-				// long move
-				if (board.getFigure(l, r + 1) == 0
-						&& board.getFigure(l, r + 2) == 0) {
-					this.addMove(l, r + 2);
+			// Direction up....
+			if ((board.getDirection() == Board.DIRECTION_WHITE && figureType > 0)
+					|| (board.getDirection() == Board.DIRECTION_BLACK && figureType < 0)) {
+				/* Compute forward move... */
+				if (r == 2) {
+					// long move
+					if (board.getFigure(l, r + 1) == 0
+							&& board.getFigure(l, r + 2) == 0) {
+						this.addMove(l, r + 2);
+					}
 				}
-			}
-			if (r >= 2 && r < 8) {
+				if (r >= 2 && r < 8) {
+					// possible move
+					if (board.getFigure(l, r + 1) == 0) {
+						this.addMove(l, r + 1);
+					}
+				}
+
+				/* compute hits */
 				// possible move
-				if (board.getFigure(l, r + 1) == 0) {
-					this.addMove(l, r + 1);
+				if (r < 8) {
+					if (l < 8 && isOpponent(board.getFigure(l + 1, r + 1))) {
+						this.addMove(l + 1, r + 1);
+					}
+					if (l > 1 && isOpponent(board.getFigure(l - 1, r + 1))) {
+						this.addMove(l - 1, r + 1);
+					}
 				}
-			}
+			} else {
+				// compute pawn moves for black
 
-			/* compute hits */
-			// possible move
-			if (l < 8 && board.getFigure(l + 1, r + 1) < 0) {
-				this.addMove(l + 1, r + 1);
-			}
-			if (l > 1 && board.getFigure(l - 1, r + 1) < 0) {
-				this.addMove(l - 1, r + 1);
-			}
+				/* Compute forward move... */
+				if (r == 7) {
+					// long move
+					if (board.getFigure(l, r - 1) == 0
+							&& board.getFigure(l, r - 2) == 0) {
+						this.addMove(l, r - 2);
+					}
+				}
+				if (r <= 7 && r > 1) {
+					// possible move
+					if (board.getFigure(l, r - 1) == 0) {
+						this.addMove(l, r - 1);
+					}
+				}
 
+				/* compute hits */
+				// possible move
+				if (r > 1) {
+					if (l > 8 && isOpponent(board.getFigure(l + 1, r - 1))) {
+						this.addMove(l + 1, r - 1);
+					}
+					if (l > 1 && isOpponent(board.getFigure(l - 1, r - 1))) {
+						this.addMove(l - 1, r - 1);
+					}
+
+				}
+
+			}
 		} catch (IllegalBoardException e) {
 			e.printStackTrace();
 		}

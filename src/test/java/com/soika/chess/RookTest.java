@@ -26,7 +26,7 @@ public class RookTest {
 
 	@Before
 	public void setup() {
-		board = new Board();
+		board = new Board(Board.DIRECTION_WHITE);
 		logger.info("setup board");
 	}
 
@@ -213,4 +213,29 @@ public class RookTest {
 
 	}
 
+	
+	
+	
+
+	/**
+	 * Test Rook A1 in a new game
+	 */
+	@Test
+	public void testNewGameBlack() {
+
+		try {
+			board=new Board(Board.DIRECTION_BLACK);
+			board.initNewGame();
+			Figure rook = board.createFigure("A1");
+			
+			
+			Assert.assertTrue(rook.getMoves().size()==0);
+
+		} catch (IllegalBoardException e) {
+			fail();
+			e.printStackTrace();
+		}
+
+	}
+	
 }

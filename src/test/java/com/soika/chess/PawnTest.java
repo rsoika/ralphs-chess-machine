@@ -26,7 +26,7 @@ public class PawnTest {
 
 	@Before
 	public void setup() {
-		board = new Board();
+		board = new Board(Board.DIRECTION_WHITE);
 		logger.info("setup board");
 	}
 
@@ -40,6 +40,28 @@ public class PawnTest {
 			Assert.assertTrue(pawn.getMoves().contains(Board.getFieldIndex("a4")));
 
 			Assert.assertFalse(pawn.getMoves().contains(Board.getFieldIndex("B3")));
+
+		} catch (IllegalBoardException e) {
+			fail();
+			e.printStackTrace();
+		}
+
+	}
+	
+	/**
+	 * computer plays black
+	 */
+	@Test
+	public void testA2Black() {
+		board = new Board(Board.DIRECTION_BLACK);
+		try {
+			board.placeFigure("A7", Board.PAWN_ME);
+			Figure pawnBlack = board.createFigure("A7");
+			Assert.assertTrue(pawnBlack.getMoves().size()==2);
+			Assert.assertTrue(pawnBlack.getMoves().contains(Board.getFieldIndex("A6")));
+			Assert.assertTrue(pawnBlack.getMoves().contains(Board.getFieldIndex("a5")));
+
+			Assert.assertFalse(pawnBlack.getMoves().contains(Board.getFieldIndex("B6")));
 
 		} catch (IllegalBoardException e) {
 			fail();

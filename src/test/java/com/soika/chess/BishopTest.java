@@ -26,7 +26,7 @@ public class BishopTest {
 
 	@Before
 	public void setup() {
-		board = new Board();
+		board = new Board(Board.DIRECTION_WHITE);
 		logger.info("setup board");
 	}
 

@@ -9,8 +9,8 @@ import com.soika.chess.exceptions.IllegalMoveException;
 
 /**
  * Abstract Figure class. Provides general move list for a figure. A figure is
- * always bound to a board. The board defines the basis for the move list.
- * This class is extended by the concrete figure classes.
+ * always bound to a board. The board defines the basis for the move list. This
+ * class is extended by the concrete figure classes.
  * 
  * 
  * <code>
@@ -26,6 +26,7 @@ import com.soika.chess.exceptions.IllegalMoveException;
 	  │               │
 	  └───────────────┘
  * </code>
+ * 
  * @author rsoika
  *
  */
@@ -34,22 +35,23 @@ public abstract class AbstractFigure implements Figure {
 	Board board;
 	byte figureType;
 	List<Byte> moves;
-	byte line,row;
+	byte line, row;
 
 	public AbstractFigure() {
 		super();
 	}
 
-	public AbstractFigure(Board aboard, byte fieldIndex, byte figureType) throws IllegalBoardException {
+	public AbstractFigure(Board aboard, byte fieldIndex, byte figureType)
+			throws IllegalBoardException {
 		super();
 		// validate params
-		if (aboard.getFigure(fieldIndex)!=figureType) {
+		if (aboard.getFigure(fieldIndex) != figureType) {
 			throw new IllegalBoardException();
 		}
-		
-		this.row=Board.rowFromIndex(fieldIndex);
-		this.line=Board.lineFromIndex(fieldIndex);
-		this.figureType=figureType;
+
+		this.row = Board.rowFromIndex(fieldIndex);
+		this.line = Board.lineFromIndex(fieldIndex);
+		this.figureType = figureType;
 
 		reset(aboard);
 
@@ -86,8 +88,6 @@ public abstract class AbstractFigure implements Figure {
 		computeMoves();
 	}
 
-
-
 	/**
 	 * returns the list of moves
 	 * 
@@ -104,11 +104,11 @@ public abstract class AbstractFigure implements Figure {
 	 * @param line
 	 * @param row
 	 * @throws IllegalMoveException
-	 * @throws IllegalBoardException 
+	 * @throws IllegalBoardException
 	 */
-	public void addMove(int line, int row) throws  IllegalBoardException {
-	
-		byte mov = Board.getFieldIndex(line,row);
+	public void addMove(int line, int row) throws IllegalBoardException {
+
+		byte mov = Board.getFieldIndex(line, row);
 		if (!moves.contains(mov))
 			moves.add(mov);
 	}
@@ -128,6 +128,62 @@ public abstract class AbstractFigure implements Figure {
 		byte mov = (byte) (line * row);
 		if (moves.contains(mov))
 			moves.remove(mov);
+	}
+
+	/**
+	 * This method returns true if a given FigureType is an opposite figure to
+	 * this FigureType
+	 * 
+	 * @return
+	 */
+	public boolean isOpponent(byte afigureType) {
+		if (figureType > 0)
+			return (afigureType < 0);
+		else
+			return (afigureType > 0);
+	}
+	
+	/**
+	 * This method returns true if a given FigureType is empty or an opposite figure to
+	 * this FigureType
+	 * 
+	 * @return
+	 */
+	public boolean isOpponentOrEmpty(byte afigureType) {
+		if (afigureType == 0)
+			return true;
+		if (figureType > 0)
+			return (afigureType < 0);
+		else
+			return (afigureType > 0);
+	}
+
+	/**
+	 * This method returns true if a given FigureType is a leaguer figure to
+	 * this FigureType
+	 * 
+	 * @return
+	 */
+	public boolean isLeaguer(byte afigureType) {
+		if (figureType > 0)
+			return (afigureType > 0);
+		else
+			return (afigureType < 0);
+	}
+
+	/**
+	 * This method returns true if a given FigureType is empty or a leaguer
+	 * figure to this FigureType
+	 * 
+	 * @return
+	 */
+	public boolean isLeaguerOrEmpty(byte afigureType) {
+		if (afigureType == 0)
+			return true;
+		if (figureType > 0)
+			return (afigureType > 0);
+		else
+			return (afigureType < 0);
 	}
 
 }

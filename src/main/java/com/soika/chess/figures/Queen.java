@@ -45,7 +45,7 @@ public class Queen extends AbstractFigure {
 			if (l < 8) {
 				for (int i = l + 1; i <= 8; i++) {
 					// possible move
-					if (board.getFigure(i, r) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(i, r))) {
 						this.addMove(i, r);
 					}
 					// blocked?
@@ -56,7 +56,7 @@ public class Queen extends AbstractFigure {
 			if (l > 1) {
 				for (int i = l - 1; i >= 1; i--) {
 					// possible move
-					if (board.getFigure(i, r) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(i, r))) {
 						this.addMove(i, r);
 					}
 					// blocked?
@@ -69,7 +69,7 @@ public class Queen extends AbstractFigure {
 			if (r < 8) {
 				for (int i = r + 1; i <= 8; i++) {
 					// possible move
-					if (board.getFigure(l, i) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l, i))) {
 						this.addMove(l, i);
 					}
 					// blocked?
@@ -80,7 +80,7 @@ public class Queen extends AbstractFigure {
 			if (r > 1) {
 				for (int i = r - 1; i >= 1; i--) {
 					// possible move
-					if (board.getFigure(l, i) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l, i))) {
 						this.addMove(l, i);
 					}
 					// blocked?
@@ -99,7 +99,7 @@ public class Queen extends AbstractFigure {
 					if (l < 1 || r > 8)
 						break;
 					// possible move
-					if (board.getFigure(l, r) <= 0)
+					if (isOpponentOrEmpty(board.getFigure(l, r) ))
 						this.addMove(l, r);
 					// blocked?
 					if (board.getFigure(l, r) != 0)
@@ -117,7 +117,7 @@ public class Queen extends AbstractFigure {
 					if (l > 8 || r > 8)
 						break;
 					// possible move
-					if (board.getFigure(l, r) <= 0)
+					if (isOpponentOrEmpty(board.getFigure(l, r) ))
 						this.addMove(l, r);
 
 					// blocked?
@@ -137,7 +137,7 @@ public class Queen extends AbstractFigure {
 					if (l < 1 || r < 1)
 						break;
 					// possible move
-					if (board.getFigure(l, r) <= 0)
+					if (isOpponentOrEmpty(board.getFigure(l, r) ))
 						this.addMove(l, r);
 					// blocked?
 					if (board.getFigure(l, r) != 0)
@@ -155,7 +155,7 @@ public class Queen extends AbstractFigure {
 					if (l > 8 || r < 1)
 						break;
 					// possible move
-					if (board.getFigure(l, r) <= 0)
+					if (isOpponentOrEmpty(board.getFigure(l, r) ))
 						this.addMove(l, r);
 					// blocked?
 					if (board.getFigure(l, r) != 0)

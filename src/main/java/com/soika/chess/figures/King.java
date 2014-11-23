@@ -48,18 +48,18 @@ public class King extends AbstractFigure {
 			if (r < 8) {
 				if (l > 1) {
 					// possible move
-					if (board.getFigure(l - 1, r + 1) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l - 1, r + 1))) {
 						this.addMove(l - 1, r + 1);
 					}
 				}
 				if (l < 8) {
 					// possible move
-					if (board.getFigure(l + 1, r + 1) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l + 1, r + 1) )) {
 						this.addMove(l + 1, r + 1);
 					}
 				}
 				// possible move
-				if (board.getFigure(l, r + 1) <= 0) {
+				if (isOpponentOrEmpty(board.getFigure(l, r + 1) )) {
 					this.addMove(l , r + 1);
 				}
 			}
@@ -68,18 +68,18 @@ public class King extends AbstractFigure {
 			if (r > 1) {
 				if (l > 1) {
 					// possible move
-					if (board.getFigure(l - 1, r - 1) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l - 1, r - 1) )) {
 						this.addMove(l - 1, r - 1);
 					}
 				}
 				if (l < 8) {
 					// possible move
-					if (board.getFigure(l + 1, r - 1) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l + 1, r - 1))) {
 						this.addMove(l + 1, r - 1);
 					}
 				}
 				// possible move
-				if (board.getFigure(l, r - 1) <= 0) {
+				if (isOpponentOrEmpty(board.getFigure(l, r - 1) )) {
 					this.addMove(l , r - 1);
 				}
 			}
@@ -87,13 +87,13 @@ public class King extends AbstractFigure {
 			/* Compute left / right... */
 			if (l > 1) {
 				// possible move
-				if (board.getFigure(l - 1, r) <= 0) {
+				if (isOpponentOrEmpty(board.getFigure(l - 1, r) )) {
 					this.addMove(l - 1, r);
 				}
 			}
 			if (l < 8) {
 				// possible move
-				if (board.getFigure(l + 1, r) <= 0) {
+				if (isOpponentOrEmpty(board.getFigure(l + 1, r) )) {
 					this.addMove(l + 1, r);
 				}
 			}

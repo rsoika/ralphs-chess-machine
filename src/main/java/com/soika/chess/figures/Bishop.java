@@ -50,7 +50,7 @@ public class Bishop extends AbstractFigure {
 					if (l < 1 || r > 8)
 						break;
 					// possible move
-					if (board.getFigure(l, r) <= 0)
+					if (isOpponentOrEmpty(board.getFigure(l, r) ))
 						this.addMove(l, r);
 					// blocked?
 					if (board.getFigure(l, r) != 0)
@@ -68,7 +68,7 @@ public class Bishop extends AbstractFigure {
 					if (l > 8 || r > 8)
 						break;
 					// possible move
-					if (board.getFigure(l, r) <= 0)
+					if (isOpponentOrEmpty(board.getFigure(l, r) ))
 						this.addMove(l, r);
 
 					// blocked?
@@ -89,7 +89,7 @@ public class Bishop extends AbstractFigure {
 					if (l < 1 || r <1)
 						break;
 					// possible move
-					if (board.getFigure(l, r) <= 0)
+					if (isOpponentOrEmpty(board.getFigure(l, r) ))
 						this.addMove(l, r);
 					// blocked?
 					if (board.getFigure(l, r) != 0)
@@ -110,7 +110,7 @@ public class Bishop extends AbstractFigure {
 					if (l > 8 || r <1)
 						break;
 					// possible move
-					if (board.getFigure(l, r) <= 0)
+					if (isOpponentOrEmpty(board.getFigure(l, r) ))
 						this.addMove(l, r);
 					// blocked?
 					if (board.getFigure(l, r) != 0)

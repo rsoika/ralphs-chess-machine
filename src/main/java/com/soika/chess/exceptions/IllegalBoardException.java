@@ -5,7 +5,9 @@ public class IllegalBoardException extends Exception {
 	public IllegalBoardException(String message, IllegalBoardException e) {
 		super(message,e);
 	}
-
+	public IllegalBoardException(String message) {
+		super(message);
+	}
 	public IllegalBoardException() {
 		super();
 	}

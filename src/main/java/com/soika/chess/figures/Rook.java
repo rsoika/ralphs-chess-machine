@@ -44,7 +44,7 @@ public class Rook extends AbstractFigure {
 			if (l < 8) {
 				for (int i = l + 1; i <= 8; i++) {
 					// possible move
-					if (board.getFigure(i, r) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(i, r))) {
 						this.addMove(i, r);
 					}
 					// blocked?
@@ -55,7 +55,7 @@ public class Rook extends AbstractFigure {
 			if (l > 1) {
 				for (int i = l - 1; i >= 1; i--) {
 					// possible move
-					if (board.getFigure(i, r) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(i, r))) {
 						this.addMove(i, r);
 					}
 					// blocked?
@@ -68,7 +68,7 @@ public class Rook extends AbstractFigure {
 			if (r < 8) {
 				for (int i = r + 1; i <= 8; i++) {
 					// possible move
-					if (board.getFigure(l, i) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l, i))) {
 						this.addMove(l, i);
 					}
 					// blocked?
@@ -79,7 +79,7 @@ public class Rook extends AbstractFigure {
 			if (r > 1) {
 				for (int i = r - 1; i >= 1; i--) {
 					// possible move
-					if (board.getFigure(l, i) <= 0) {
+					if (isOpponentOrEmpty(board.getFigure(l, i) )) {
 						this.addMove(l, i);
 					}
 					// blocked?

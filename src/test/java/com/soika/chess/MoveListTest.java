@@ -14,19 +14,19 @@ import com.soika.chess.exceptions.IllegalBoardException;
 
 /**
  * Tests the computed move list of a borard
+ * 
  * @author rsoika
  *
  */
 public class MoveListTest {
 
 	Board board;
-	private final static Logger logger = Logger
-			.getLogger(MoveListTest.class.getName());
-
+	private final static Logger logger = Logger.getLogger(MoveListTest.class
+			.getName());
 
 	@Before
 	public void setup() {
-		board = new Board();
+		board = new Board(Board.DIRECTION_WHITE);
 		logger.info("setup board");
 	}
 
@@ -47,7 +47,7 @@ public class MoveListTest {
 	   A B C D E F G H
 
 	   C4
-     * </code>	
+     * </code>
 	 */
 	@Test
 	public void testB4() {
@@ -55,43 +55,80 @@ public class MoveListTest {
 		try {
 			board.placeFigure("C4", Board.KNIGHT_ME);
 			board.placeFigure("H2", Board.PAWN_ME);
-			
-			List<byte[]> moveList=board.getMyMoveList();
-			
-			Assert.assertTrue(moveList.size()==10);
-			byte[] move = new byte[2];
-			move[0] = 26;
-			move[1] = 9;
-			Assert.assertTrue(containsMove(moveList,move));
 
-			move[0] = 26;
-			move[1] = 10;
-			Assert.assertFalse(containsMove(moveList,move));
-			
+			List<byte[]> moveList = board.getMyMoveList();
+
+			Assert.assertTrue(moveList.size() == 10);
+			Assert.assertTrue(Board.isValidMove(moveList, 26, 9));
+
+			Assert.assertFalse(Board.isValidMove(moveList, 26, 10));
+
 			// test pawn
-			move[0] = 15;
-			move[1] = 23;
-			Assert.assertTrue(containsMove(moveList,move));
+			Assert.assertTrue(Board.isValidMove(moveList, 15, 23));
 		} catch (IllegalBoardException e) {
 			fail();
 			e.printStackTrace();
 		}
 
 	}
-	
-	
+
 	/**
-	 * Helper method to compare a byte[] list
-	 * @param moveList
-	 * @param move
-	 * @return
+	 * <code>
+	  ♔♕♖♗♘♙♚♛♜♝♞♟
+	   A B C D E F G H
+	  ┌───────────────┐
+	 8│♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜│
+	 7│♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟│   Computer
+	 6│               │
+	 5│               │
+	 4│               │
+	 3│               │
+	 2│♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙│    Human
+	 1│♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖│
+	  └───────────────┘
+	   A B C D E F G H
+
+	   C4
+     * </code>
 	 */
-	private boolean containsMove (List<byte[]> moveList,byte[] move ) {
-		for (byte[] amove : moveList) {
-			if (amove[0]==move[0] && amove[1]==move[1])
-				return true;
+	@Test
+	public void testNewGame() {
+
+		try {
+			board = new Board(Board.DIRECTION_BLACK);
+			board.initNewGame();
+
+			List<byte[]> myMoveList = board.getMyMoveList();
+
+			Assert.assertTrue(myMoveList.size() == 20);
+
+			// test my pawn
+			Assert.assertTrue(Board.isValidMove(myMoveList, 48, 40));
+
+			// test my knight
+			Assert.assertTrue(Board.isValidMove(myMoveList,
+					Board.getFieldIndex("B8"), Board.getFieldIndex("A6")));
+			Assert.assertTrue(Board.isValidMove(myMoveList,
+					Board.getFieldIndex("B8"), Board.getFieldIndex("C6")));
+
+			// test your list...
+			List<byte[]> yoursMoveList = board.getYoursMoveList();
+			Assert.assertTrue(yoursMoveList.size() == 20);
+			// test your pawn
+			Assert.assertTrue(Board.isValidMove(yoursMoveList,
+					Board.getFieldIndex("B2"), Board.getFieldIndex("B3")));
+
+			// test your knight
+			Assert.assertTrue(Board.isValidMove(yoursMoveList,
+					Board.getFieldIndex("B1"), Board.getFieldIndex("A3")));
+			Assert.assertTrue(Board.isValidMove(yoursMoveList,
+					Board.getFieldIndex("B1"), Board.getFieldIndex("C3")));
+
+		} catch (IllegalBoardException e) {
+			fail();
+			e.printStackTrace();
 		}
-		return false;
+
 	}
-	
+
 }
