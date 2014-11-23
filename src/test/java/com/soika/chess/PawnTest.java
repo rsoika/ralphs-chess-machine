@@ -36,10 +36,10 @@ public class PawnTest {
 		try {
 			board.placeFigure("A2", Board.PAWN_ME);
 			Figure pawn = board.createFigure("A2");
-			Assert.assertTrue(pawn.getMoves().contains(Board.getField("A3")));
-			Assert.assertTrue(pawn.getMoves().contains(Board.getField("a4")));
+			Assert.assertTrue(pawn.getMoves().contains(Board.getFieldIndex("A3")));
+			Assert.assertTrue(pawn.getMoves().contains(Board.getFieldIndex("a4")));
 
-			Assert.assertFalse(pawn.getMoves().contains(Board.getField("B3")));
+			Assert.assertFalse(pawn.getMoves().contains(Board.getFieldIndex("B3")));
 
 		} catch (IllegalBoardException e) {
 			fail();
@@ -54,10 +54,10 @@ public class PawnTest {
 			board.placeFigure("A2", Board.PAWN_ME);
 			board.placeFigure("A3", Board.PAWN_ME);
 			Figure pawn = board.createFigure("A2");
-			Assert.assertFalse(pawn.getMoves().contains(Board.getField("A3")));
-			Assert.assertFalse(pawn.getMoves().contains(Board.getField("a4")));
+			Assert.assertFalse(pawn.getMoves().contains(Board.getFieldIndex("A3")));
+			Assert.assertFalse(pawn.getMoves().contains(Board.getFieldIndex("a4")));
 
-			Assert.assertFalse(pawn.getMoves().contains(Board.getField("B3")));
+			Assert.assertFalse(pawn.getMoves().contains(Board.getFieldIndex("B3")));
 
 		} catch (IllegalBoardException e) {
 			fail();
@@ -72,11 +72,11 @@ public class PawnTest {
 		try {
 			board.placeFigure("D2", Board.PAWN_ME);
 			Figure pawn = board.createFigure("D2");
-			Assert.assertTrue(pawn.getMoves().contains(Board.getField("D3")));
-			Assert.assertTrue(pawn.getMoves().contains(Board.getField("D4")));
+			Assert.assertTrue(pawn.getMoves().contains(Board.getFieldIndex("D3")));
+			Assert.assertTrue(pawn.getMoves().contains(Board.getFieldIndex("D4")));
 
-			Assert.assertFalse(pawn.getMoves().contains(Board.getField("E3")));
-			Assert.assertFalse(pawn.getMoves().contains(Board.getField("C3")));
+			Assert.assertFalse(pawn.getMoves().contains(Board.getFieldIndex("E3")));
+			Assert.assertFalse(pawn.getMoves().contains(Board.getFieldIndex("C3")));
 
 		} catch (IllegalBoardException e) {
 			fail();
@@ -94,11 +94,11 @@ public class PawnTest {
 			board.placeFigure("C3", Board.PAWN_YOURS);
 			board.placeFigure("E3", Board.PAWN_YOURS);
 			Figure pawn = board.createFigure("D2");
-			Assert.assertTrue(pawn.getMoves().contains(Board.getField("D3")));
-			Assert.assertTrue(pawn.getMoves().contains(Board.getField("D4")));
+			Assert.assertTrue(pawn.getMoves().contains(Board.getFieldIndex("D3")));
+			Assert.assertTrue(pawn.getMoves().contains(Board.getFieldIndex("D4")));
 
-			Assert.assertTrue(pawn.getMoves().contains(Board.getField("E3")));
-			Assert.assertTrue(pawn.getMoves().contains(Board.getField("C3")));
+			Assert.assertTrue(pawn.getMoves().contains(Board.getFieldIndex("E3")));
+			Assert.assertTrue(pawn.getMoves().contains(Board.getFieldIndex("C3")));
 
 		} catch (IllegalBoardException e) {
 			fail();
@@ -112,7 +112,7 @@ public class PawnTest {
 		try {
 			board.placeFigure("A7", Board.PAWN_ME);
 			Figure pawn = board.createFigure("A7");
-			Assert.assertTrue(pawn.getMoves().contains(Board.getField("A8")));
+			Assert.assertTrue(pawn.getMoves().contains(Board.getFieldIndex("A8")));
 		} catch (IllegalBoardException e) {
 			fail();
 			e.printStackTrace();

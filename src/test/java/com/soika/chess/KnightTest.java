@@ -56,19 +56,19 @@ public class KnightTest {
 		try {
 			board.placeFigure("C4", Board.KNIGHT_ME);
 			Figure knight = board.createFigure("C4");
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("B6")));
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("D6")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("B6")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("D6")));
 			
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("A5")));
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("E5")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("A5")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("E5")));
 
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("A3")));
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("E3")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("A3")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("E3")));
 			
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("B2")));
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("D2")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("B2")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("D2")));
 
-			Assert.assertFalse(knight.getMoves().contains(Board.getField("B4")));
+			Assert.assertFalse(knight.getMoves().contains(Board.getFieldIndex("B4")));
 
 		} catch (IllegalBoardException e) {
 			fail();
@@ -103,19 +103,19 @@ public class KnightTest {
 			board.placeFigure("B2", Board.ROOK_YOURS);
 			board.placeFigure("C4", Board.KNIGHT_ME);
 			Figure knight = board.createFigure("C4");
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("B6")));
-			Assert.assertFalse(knight.getMoves().contains(Board.getField("D6")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("B6")));
+			Assert.assertFalse(knight.getMoves().contains(Board.getFieldIndex("D6")));
 			
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("A5")));
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("E5")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("A5")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("E5")));
 
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("A3")));
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("E3")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("A3")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("E3")));
 			
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("B2")));
-			Assert.assertTrue(knight.getMoves().contains(Board.getField("D2")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("B2")));
+			Assert.assertTrue(knight.getMoves().contains(Board.getFieldIndex("D2")));
 
-			Assert.assertFalse(knight.getMoves().contains(Board.getField("B4")));
+			Assert.assertFalse(knight.getMoves().contains(Board.getFieldIndex("B4")));
 		} catch (IllegalBoardException e) {
 			fail();
 			e.printStackTrace();

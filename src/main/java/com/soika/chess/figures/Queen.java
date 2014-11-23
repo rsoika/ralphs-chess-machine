@@ -26,9 +26,9 @@ public class Queen extends AbstractFigure {
 	 * @throws IllegalBoardException
 	 */
 
-	public Queen(Board aboard, int line, int row, byte figureType)
+	public Queen(Board aboard, byte fieldIndex, byte figureType)
 			throws IllegalBoardException {
-		super(aboard, line, row, figureType);
+		super(aboard, fieldIndex, figureType);
 	}
 
 	@Override
@@ -64,32 +64,30 @@ public class Queen extends AbstractFigure {
 						break;
 				}
 			}
-			
+
 			/* Compute rows... */
 			if (r < 8) {
 				for (int i = r + 1; i <= 8; i++) {
 					// possible move
-					if (board.getFigure(l,i) <= 0) {
-						this.addMove(l,i);
+					if (board.getFigure(l, i) <= 0) {
+						this.addMove(l, i);
 					}
 					// blocked?
-					if (board.getFigure(l,i) != 0)
+					if (board.getFigure(l, i) != 0)
 						break;
 				}
 			}
 			if (r > 1) {
 				for (int i = r - 1; i >= 1; i--) {
 					// possible move
-					if (board.getFigure(l,i) <= 0) {
-						this.addMove( l,i);
+					if (board.getFigure(l, i) <= 0) {
+						this.addMove(l, i);
 					}
 					// blocked?
-					if (board.getFigure(l,i) != 0)
+					if (board.getFigure(l, i) != 0)
 						break;
 				}
 			}
-			
-			
 
 			/* Compute left up... */
 			r = this.getRow();
@@ -125,11 +123,10 @@ public class Queen extends AbstractFigure {
 					// blocked?
 					if (board.getFigure(l, r) != 0)
 						break;
-					
+
 				}
 			}
-			
-			
+
 			/* Compute left down... */
 			r = this.getRow();
 			l = this.getLine();
@@ -137,7 +134,7 @@ public class Queen extends AbstractFigure {
 				while (true) {
 					l--;
 					r--;
-					if (l < 1 || r <1)
+					if (l < 1 || r < 1)
 						break;
 					// possible move
 					if (board.getFigure(l, r) <= 0)
@@ -147,18 +144,15 @@ public class Queen extends AbstractFigure {
 						break;
 				}
 			}
-			
-			
-			
-			
+
 			/* Compute right down... */
 			r = this.getRow();
 			l = this.getLine();
-			if (l <8 && r > 1) {
+			if (l < 8 && r > 1) {
 				while (true) {
 					l++;
 					r--;
-					if (l > 8 || r <1)
+					if (l > 8 || r < 1)
 						break;
 					// possible move
 					if (board.getFigure(l, r) <= 0)
@@ -168,9 +162,6 @@ public class Queen extends AbstractFigure {
 						break;
 				}
 			}
-			
-			
-			
 
 		} catch (IllegalBoardException e) {
 			e.printStackTrace();

@@ -26,11 +26,10 @@ public class Pawn extends AbstractFigure {
 	 * @throws IllegalBoardException
 	 */
 
-	public Pawn(Board aboard, int line, int row,byte figureType) throws IllegalBoardException {
-		super(aboard, line, row,figureType);
+	public Pawn(Board aboard, byte fieldIndex, byte figureType)
+			throws IllegalBoardException {
+		super(aboard, fieldIndex, figureType);
 	}
-
-
 
 	@Override
 	public void computeMoves() {
@@ -44,7 +43,8 @@ public class Pawn extends AbstractFigure {
 			/* Compute forward move... */
 			if (r == 2) {
 				// long move
-				if (board.getFigure(l, r + 1) == 0 && board.getFigure(l, r + 2) == 0) {
+				if (board.getFigure(l, r + 1) == 0
+						&& board.getFigure(l, r + 2) == 0) {
 					this.addMove(l, r + 2);
 				}
 			}

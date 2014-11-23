@@ -26,11 +26,10 @@ public class Rook extends AbstractFigure {
 	 * @throws IllegalBoardException
 	 */
 
-	public Rook(Board aboard, int line, int row, byte figureType) throws IllegalBoardException {
-		super(aboard, line, row,figureType);
+	public Rook(Board aboard, byte fieldIndex, byte figureType)
+			throws IllegalBoardException {
+		super(aboard, fieldIndex, figureType);
 	}
-
-	
 
 	@Override
 	public void computeMoves() {
@@ -64,27 +63,27 @@ public class Rook extends AbstractFigure {
 						break;
 				}
 			}
-			
+
 			/* Compute rows... */
 			if (r < 8) {
 				for (int i = r + 1; i <= 8; i++) {
 					// possible move
-					if (board.getFigure(l,i) <= 0) {
-						this.addMove(l,i);
+					if (board.getFigure(l, i) <= 0) {
+						this.addMove(l, i);
 					}
 					// blocked?
-					if (board.getFigure(l,i) != 0)
+					if (board.getFigure(l, i) != 0)
 						break;
 				}
 			}
 			if (r > 1) {
 				for (int i = r - 1; i >= 1; i--) {
 					// possible move
-					if (board.getFigure(l,i) <= 0) {
-						this.addMove( l,i);
+					if (board.getFigure(l, i) <= 0) {
+						this.addMove(l, i);
 					}
 					// blocked?
-					if (board.getFigure(l,i) != 0)
+					if (board.getFigure(l, i) != 0)
 						break;
 				}
 			}
@@ -94,6 +93,5 @@ public class Rook extends AbstractFigure {
 		}
 
 	}
-
 
 }

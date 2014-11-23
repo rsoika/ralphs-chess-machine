@@ -38,22 +38,22 @@ public class BishopTest {
 		try {
 			board.placeFigure("B4", Board.BISHOP_ME);
 			Figure bishop = board.createFigure("B4");
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("A5")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("A5")));
 			
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("C5")));
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("D6")));
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("E7")));
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("F8")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("C5")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("D6")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("E7")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("F8")));
 
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("A3")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("A3")));
 			
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("C3")));
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("D2")));
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("E1")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("C3")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("D2")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("E1")));
 
 			
 			
-			Assert.assertFalse(bishop.getMoves().contains(Board.getField("B4")));
+			Assert.assertFalse(bishop.getMoves().contains(Board.getFieldIndex("B4")));
 
 		} catch (IllegalBoardException e) {
 			fail();
@@ -74,22 +74,22 @@ public class BishopTest {
 			board.placeFigure("B4", Board.BISHOP_ME);
 			board.placeFigure("e7", Board.PAWN_ME);
 			Figure bishop = board.createFigure("B4");
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("A5")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("A5")));
 			
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("C5")));
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("D6")));
-			Assert.assertFalse(bishop.getMoves().contains(Board.getField("E7")));
-			Assert.assertFalse(bishop.getMoves().contains(Board.getField("F8")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("C5")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("D6")));
+			Assert.assertFalse(bishop.getMoves().contains(Board.getFieldIndex("E7")));
+			Assert.assertFalse(bishop.getMoves().contains(Board.getFieldIndex("F8")));
 
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("A3")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("A3")));
 			
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("C3")));
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("D2")));
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("E1")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("C3")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("D2")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("E1")));
 
 			
 			
-			Assert.assertFalse(bishop.getMoves().contains(Board.getField("B4")));
+			Assert.assertFalse(bishop.getMoves().contains(Board.getFieldIndex("B4")));
 
 		} catch (IllegalBoardException e) {
 			fail();
@@ -108,22 +108,22 @@ public class BishopTest {
 			board.placeFigure("B4", Board.BISHOP_ME);
 			board.placeFigure("e7", Board.PAWN_YOURS);
 			Figure bishop =  board.createFigure("B4");
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("A5")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("A5")));
 			
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("C5")));
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("D6")));
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("E7")));
-			Assert.assertFalse(bishop.getMoves().contains(Board.getField("F8")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("C5")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("D6")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("E7")));
+			Assert.assertFalse(bishop.getMoves().contains(Board.getFieldIndex("F8")));
 
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("A3")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("A3")));
 			
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("C3")));
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("D2")));
-			Assert.assertTrue(bishop.getMoves().contains(Board.getField("E1")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("C3")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("D2")));
+			Assert.assertTrue(bishop.getMoves().contains(Board.getFieldIndex("E1")));
 
 			
 			
-			Assert.assertFalse(bishop.getMoves().contains(Board.getField("B4")));
+			Assert.assertFalse(bishop.getMoves().contains(Board.getFieldIndex("B4")));
 
 		} catch (IllegalBoardException e) {
 			fail();

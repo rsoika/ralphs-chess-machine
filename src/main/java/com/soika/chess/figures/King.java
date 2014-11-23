@@ -29,9 +29,9 @@ public class King extends AbstractFigure {
 	 * @throws IllegalBoardException
 	 */
 
-	public King(Board aboard, int line, int row, byte figureType)
+	public King(Board aboard,byte fieldIndex, byte figureType)
 			throws IllegalBoardException {
-		super(aboard, line, row, figureType);
+		super(aboard, fieldIndex, figureType);
 	}
 
 	@Override

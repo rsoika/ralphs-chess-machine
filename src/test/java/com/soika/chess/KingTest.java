@@ -56,23 +56,23 @@ public class KingTest {
 		try {
 			board.placeFigure("B4", Board.KING_ME);
 			Figure king = board.createFigure("B4");
-			Assert.assertTrue(king.getMoves().contains(Board.getField("A3")));
-			Assert.assertTrue(king.getMoves().contains(Board.getField("A4")));
-			Assert.assertTrue(king.getMoves().contains(Board.getField("A5")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("A3")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("A4")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("A5")));
 			
-			Assert.assertTrue(king.getMoves().contains(Board.getField("B3")));
-			Assert.assertTrue(king.getMoves().contains(Board.getField("B5")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("B3")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("B5")));
 
-			Assert.assertTrue(king.getMoves().contains(Board.getField("c3")));
-			Assert.assertTrue(king.getMoves().contains(Board.getField("c4")));
-			Assert.assertTrue(king.getMoves().contains(Board.getField("c5")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("c3")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("c4")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("c5")));
 		
-			Assert.assertFalse(king.getMoves().contains(Board.getField("d4")));
-			Assert.assertFalse(king.getMoves().contains(Board.getField("b6")));
-			Assert.assertFalse(king.getMoves().contains(Board.getField("b2")));
-			Assert.assertFalse(king.getMoves().contains(Board.getField("d2")));
+			Assert.assertFalse(king.getMoves().contains(Board.getFieldIndex("d4")));
+			Assert.assertFalse(king.getMoves().contains(Board.getFieldIndex("b6")));
+			Assert.assertFalse(king.getMoves().contains(Board.getFieldIndex("b2")));
+			Assert.assertFalse(king.getMoves().contains(Board.getFieldIndex("d2")));
 
-			Assert.assertFalse(king.getMoves().contains(Board.getField("B4")));
+			Assert.assertFalse(king.getMoves().contains(Board.getFieldIndex("B4")));
 
 		} catch (IllegalBoardException e) {
 			fail();
@@ -107,23 +107,23 @@ public class KingTest {
 			board.placeFigure("C4", Board.PAWN_ME);
 			board.placeFigure("C5", Board.ROOK_YOURS);
 			Figure king = board.createFigure("B4");
-			Assert.assertTrue(king.getMoves().contains(Board.getField("A3")));
-			Assert.assertTrue(king.getMoves().contains(Board.getField("A4")));
-			Assert.assertTrue(king.getMoves().contains(Board.getField("A5")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("A3")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("A4")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("A5")));
 			
-			Assert.assertTrue(king.getMoves().contains(Board.getField("B3")));
-			Assert.assertTrue(king.getMoves().contains(Board.getField("B5")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("B3")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("B5")));
 
-			Assert.assertTrue(king.getMoves().contains(Board.getField("c3")));
-			Assert.assertFalse(king.getMoves().contains(Board.getField("c4")));
-			Assert.assertTrue(king.getMoves().contains(Board.getField("c5")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("c3")));
+			Assert.assertFalse(king.getMoves().contains(Board.getFieldIndex("c4")));
+			Assert.assertTrue(king.getMoves().contains(Board.getFieldIndex("c5")));
 		
-			Assert.assertFalse(king.getMoves().contains(Board.getField("d4")));
-			Assert.assertFalse(king.getMoves().contains(Board.getField("b6")));
-			Assert.assertFalse(king.getMoves().contains(Board.getField("b2")));
-			Assert.assertFalse(king.getMoves().contains(Board.getField("d2")));
+			Assert.assertFalse(king.getMoves().contains(Board.getFieldIndex("d4")));
+			Assert.assertFalse(king.getMoves().contains(Board.getFieldIndex("b6")));
+			Assert.assertFalse(king.getMoves().contains(Board.getFieldIndex("b2")));
+			Assert.assertFalse(king.getMoves().contains(Board.getFieldIndex("d2")));
 
-			Assert.assertFalse(king.getMoves().contains(Board.getField("B4")));
+			Assert.assertFalse(king.getMoves().contains(Board.getFieldIndex("B4")));
 		} catch (IllegalBoardException e) {
 			fail();
 			e.printStackTrace();

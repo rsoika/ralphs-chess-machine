@@ -29,9 +29,9 @@ public class Knight extends AbstractFigure {
 	 * @throws IllegalBoardException
 	 */
 
-	public Knight(Board aboard, int line, int row, byte figureType)
+	public Knight(Board aboard,byte fieldIndex, byte figureType)
 			throws IllegalBoardException {
-		super(aboard, line, row, figureType);
+		super(aboard, fieldIndex, figureType);
 	}
 
 	@Override

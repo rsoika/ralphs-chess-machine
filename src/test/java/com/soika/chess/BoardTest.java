@@ -31,11 +31,11 @@ public class BoardTest {
 	public void testBoardCoordinates() {
 
 		try {
-			Assert.assertTrue((0==Board.getField("A1")));
-			Assert.assertTrue((8==Board.getField("A2")));
-			Assert.assertTrue((1==Board.getField("B1")));
-			Assert.assertTrue((9==Board.getField("B2")));
-			Assert.assertTrue((63==Board.getField("h8")));
+			Assert.assertTrue((0==Board.getFieldIndex("A1")));
+			Assert.assertTrue((8==Board.getFieldIndex("A2")));
+			Assert.assertTrue((1==Board.getFieldIndex("B1")));
+			Assert.assertTrue((9==Board.getFieldIndex("B2")));
+			Assert.assertTrue((63==Board.getFieldIndex("h8")));
 		} catch (IllegalBoardException e) {
 			
 			e.printStackTrace();
@@ -94,8 +94,8 @@ public class BoardTest {
 
 		// test legal moves
 		try {
-			board.placeFigure(1, 1, Board.BISHOP_ME);
-			board.placeFigure(8, 8, Board.BISHOP_YOURS);
+			board.placeFigure("A1", Board.BISHOP_ME);
+			board.placeFigure("h8", Board.BISHOP_YOURS);
 		} catch (IllegalBoardException e) {
 			e.printStackTrace();
 			fail("Illegal move");
@@ -103,29 +103,49 @@ public class BoardTest {
 
 		// test illegal moves
 		try {
-			board.placeFigure(0, 1, Board.BISHOP_ME);
+			board.placeFigure("j1", Board.BISHOP_ME);
 			fail("Illegal move");
 		} catch (IllegalBoardException e) {
 			// expected
 		}
-		try {
-			board.placeFigure(1, 0, Board.BISHOP_ME);
-			fail("Illegal move");
-		} catch (IllegalBoardException e) {
-			// expected
-		}
-		try {
-			board.placeFigure(65, 1, Board.BISHOP_ME);
-			fail("Illegal move");
-		} catch (IllegalBoardException e) {
-			// expected
-		}
-		try {
-			board.placeFigure(1, 65, Board.BISHOP_ME);
-			fail("Illegal move");
-		} catch (IllegalBoardException e) {
-			// expected
-		}
+//		try {
+//			board.placeFigure(1, 0, Board.BISHOP_ME);
+//			fail("Illegal move");
+//		} catch (IllegalBoardException e) {
+//			// expected
+//		}
+//		try {
+//			board.placeFigure(65, 1, Board.BISHOP_ME);
+//			fail("Illegal move");
+//		} catch (IllegalBoardException e) {
+//			// expected
+//		}
+//		try {
+//			board.placeFigure(1, 65, Board.BISHOP_ME);
+//			fail("Illegal move");
+//		} catch (IllegalBoardException e) {
+//			// expected
+//		}
 
+	}
+	
+	
+	/**
+	 * Tests the convertion from a fild index into the line/row components
+	 */
+	@Test
+	public void testFieldIndexConverter() {
+
+		
+		Assert.assertTrue(1==Board.lineFromIndex((byte)0));
+		Assert.assertTrue(8==Board.lineFromIndex((byte)7));
+		Assert.assertTrue(7==Board.lineFromIndex((byte)14));
+		Assert.assertTrue(1==Board.lineFromIndex((byte)16));
+		
+		Assert.assertTrue(1==Board.rowFromIndex((byte)0));
+		Assert.assertTrue(1==Board.rowFromIndex((byte)7));
+		Assert.assertTrue(2==Board.rowFromIndex((byte)8));
+		Assert.assertTrue(8==Board.rowFromIndex((byte)63));
+		
 	}
 }

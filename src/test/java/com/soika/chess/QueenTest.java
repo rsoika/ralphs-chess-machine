@@ -36,21 +36,21 @@ public class QueenTest {
 		try {
 			board.placeFigure("A1", Board.QUEEN_ME);
 			Figure queen = board.createFigure("A1");
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("A2")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("A3")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("A4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("A7")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("A8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("A2")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("A3")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("A4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("A7")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("A8")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("b1")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("c1")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("d1")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("e1")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("f1")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("g1")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("h1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("b1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("c1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("d1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("e1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("f1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("g1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("h1")));
 
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("A1")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("A1")));
 
 		} catch (IllegalBoardException e) {
 			fail();
@@ -65,21 +65,21 @@ public class QueenTest {
 		try {
 			board.placeFigure("h8", Board.QUEEN_ME);
 			Figure queen = board.createFigure("H8");
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("h2")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("h3")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("h4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("h7")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("h1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("h2")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("h3")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("h4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("h7")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("h1")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("b8")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("c8")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("d8")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("e8")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("f8")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("g8")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("a8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("b8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("c8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("d8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("e8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("f8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("g8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("a8")));
 
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("h8")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("h8")));
 
 		} catch (IllegalBoardException e) {
 			fail();
@@ -94,24 +94,24 @@ public class QueenTest {
 		try {
 			board.placeFigure("B4", Board.QUEEN_ME);
 			Figure queen = board.createFigure("B4");
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B3")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B2")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B1")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B5")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B6")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B7")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B3")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B2")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B5")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B6")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B7")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B8")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("A4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("C4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("D4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("E4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("f4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("g4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("D4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("H4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("A4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("C4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("D4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("E4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("f4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("g4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("D4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("H4")));
 
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("B4")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("B4")));
 
 		} catch (IllegalBoardException e) {
 			fail();
@@ -127,23 +127,23 @@ public class QueenTest {
 			board.placeFigure("B4", Board.QUEEN_ME);
 			board.placeFigure("F4", Board.PAWN_ME);
 			Figure queen = board.createFigure("B4");
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B3")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B2")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B1")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B5")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B6")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B7")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B3")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B2")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B5")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B6")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B7")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B8")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("A4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("C4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("D4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("E4")));
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("f4")));
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("g4")));
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("H4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("A4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("C4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("D4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("E4")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("f4")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("g4")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("H4")));
 
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("B4")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("B4")));
 
 		} catch (IllegalBoardException e) {
 			fail();
@@ -159,23 +159,23 @@ public class QueenTest {
 			board.placeFigure("B4", Board.QUEEN_ME);
 			board.placeFigure("F4", Board.PAWN_YOURS);
 			Figure queen = board.createFigure("B4");
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B3")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B2")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B1")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B5")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B6")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B7")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B3")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B2")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B5")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B6")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B7")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B8")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("A4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("C4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("D4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("E4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("f4")));
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("g4")));
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("H4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("A4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("C4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("D4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("E4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("f4")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("g4")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("H4")));
 
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("B4")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("B4")));
 
 		} catch (IllegalBoardException e) {
 			fail();
@@ -190,36 +190,36 @@ public class QueenTest {
 		try {
 			board.placeFigure("B4", Board.QUEEN_ME);
 			Figure queen = board.createFigure("B4");
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("A5")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("A5")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("C5")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("D6")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("E7")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("F8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("C5")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("D6")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("E7")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("F8")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("A3")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("A3")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("C3")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("D2")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("E1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("C3")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("D2")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("E1")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B3")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("b2")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("b1")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("b5")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("b6")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("b7")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("b8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B3")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("b2")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("b1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("b5")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("b6")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("b7")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("b8")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("a4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("c4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("d4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("e4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("f4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("g4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("h4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("a4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("c4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("d4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("e4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("f4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("g4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("h4")));
 
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("B4")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("B4")));
 
 		} catch (IllegalBoardException e) {
 			fail();
@@ -255,36 +255,36 @@ public class QueenTest {
 			board.placeFigure("F4", Board.PAWN_ME);
 			board.placeFigure("E7", Board.ROOK_YOURS);
 			Figure queen = board.createFigure("B4");
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("A5")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("A5")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("C5")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("D6")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("E7")));
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("F8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("C5")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("D6")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("E7")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("F8")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("A3")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("A3")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("C3")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("D2")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("E1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("C3")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("D2")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("E1")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("B3")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("b2")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("b1")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("b5")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("b6")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("b7")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("b8")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("B3")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("b2")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("b1")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("b5")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("b6")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("b7")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("b8")));
 
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("a4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("c4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("d4")));
-			Assert.assertTrue(queen.getMoves().contains(Board.getField("e4")));
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("f4")));
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("g4")));
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("h4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("a4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("c4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("d4")));
+			Assert.assertTrue(queen.getMoves().contains(Board.getFieldIndex("e4")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("f4")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("g4")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("h4")));
 
-			Assert.assertFalse(queen.getMoves().contains(Board.getField("B4")));
+			Assert.assertFalse(queen.getMoves().contains(Board.getFieldIndex("B4")));
 
 		} catch (IllegalBoardException e) {
 			fail();

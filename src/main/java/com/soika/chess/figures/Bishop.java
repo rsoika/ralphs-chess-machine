@@ -26,9 +26,9 @@ public class Bishop extends AbstractFigure {
 	 * @throws IllegalBoardException
 	 */
 
-	public Bishop(Board aboard, int line, int row, byte figureType)
+	public Bishop(Board aboard, byte fieldIndex, byte figureType)
 			throws IllegalBoardException {
-		super(aboard, line, row, figureType);
+		super(aboard, fieldIndex, figureType);
 	}
 
 	@Override

@@ -1,5 +1,8 @@
 package com.soika.chess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.soika.chess.exceptions.IllegalBoardException;
 import com.soika.chess.exceptions.IllegalMoveException;
 import com.soika.chess.figures.Bishop;
@@ -69,14 +72,8 @@ public class Board {
 	 */
 	public void placeFigure(String field, byte figure)
 			throws IllegalBoardException {
-
-		// convert field stringg
-		field = field.toLowerCase();
-		int line = field.charAt(0) - 'a' + 1;
-		int row = field.charAt(1) - '1' + 1;
-
 		try {
-			placeFigure(line, row, figure);
+			setup[getFieldIndex(field)] = figure;
 		} catch (IllegalBoardException e) {
 			throw new IllegalBoardException("Illegal move " + field + ":"
 					+ figure, e);
@@ -84,71 +81,104 @@ public class Board {
 
 	}
 
-	/**
-	 * places a figure on the field
-	 * 
-	 * @param line
-	 *            1-8
-	 * @param row
-	 *            1-8
-	 * @param figure
-	 *            -6<6
-	 * @throws IllegalMoveException
-	 * @throws IllegalBoardException
-	 */
-	public void placeFigure(int line, int row, byte figure)
-			throws IllegalBoardException {
-
-		// validate field
-		if (line < 1 || line > 8 || row < 1 || row > 8) {
-			throw new IllegalBoardException();
-		}
-
-		// validate figure
-		if (figure < -6 || figure > 6) {
-			throw new IllegalBoardException();
-		}
-
-		// set figure
-		setup[getField(line, row)] = figure;
+	public byte getFigure(String field) throws IllegalBoardException {
+		byte fieldIndex = getFieldIndex(field);
+		return setup[fieldIndex];
 	}
 
 	public byte getFigure(int line, int row) throws IllegalBoardException {
-		byte field = getField(line, row);
-		return setup[field];
+		return setup[getFieldIndex(line, row)];
 	}
 
-	public Figure createFigure(String field)
-			throws IllegalBoardException {
-		// convert field string
-		field = field.toLowerCase();
-		int line = field.charAt(0) - 'a' + 1;
-		int row = field.charAt(1) - '1' + 1;
+	public byte getFigure(byte fieldIndex) {
+		return setup[fieldIndex];
+	}
 
-		byte figure = this.getFigure(line, row);
+	/**
+	 * Creates an instance of a figure class form the specified field
+	 * 
+	 * @param field
+	 * @return
+	 * @throws IllegalBoardException
+	 */
+	public Figure createFigure(String field) throws IllegalBoardException {
+		// convert field string
+		return createFigure(getFieldIndex(field));
+	}
+
+	/**
+	 * Creates an instance of a figure class form the specified field
+	 * 
+	 * @param field
+	 * @return
+	 * @throws IllegalBoardException
+	 */
+	public Figure createFigure(int line, int row) throws IllegalBoardException {
+		// convert field string
+		return createFigure(getFieldIndex(line, row));
+	}
+
+	/**
+	 * Creates an instance of a figure class form the specified field
+	 * 
+	 * @param field
+	 * @return
+	 * @throws IllegalBoardException
+	 */
+	public Figure createFigure(byte fieldIndex) throws IllegalBoardException {
+
+		byte figure = this.getFigure(fieldIndex);
 		if (figure == Board.PAWN_ME || figure == Board.PAWN_YOURS) {
-			return new Pawn(this, line, row, figure);
+			return new Pawn(this, fieldIndex, figure);
 		}
 		if (figure == Board.ROOK_ME || figure == Board.ROOK_YOURS) {
-			return new Rook(this, line, row, figure);
+			return new Rook(this, fieldIndex, figure);
 		}
 		if (figure == Board.BISHOP_ME || figure == Board.BISHOP_YOURS) {
-			return new Bishop(this, line, row, figure);
+			return new Bishop(this, fieldIndex, figure);
 		}
 		if (figure == Board.KNIGHT_ME || figure == Board.KNIGHT_YOURS) {
-			return new Knight(this, line, row, figure);
+			return new Knight(this, fieldIndex, figure);
 		}
 		if (figure == Board.QUEEN_ME || figure == Board.QUEEN_YOURS) {
-			return new Queen(this, line, row, figure);
+			return new Queen(this, fieldIndex, figure);
 		}
 		if (figure == Board.KING_ME || figure == Board.KING_YOURS) {
-			return new King(this, line, row, figure);
+			return new King(this, fieldIndex, figure);
 		}
 
 		return null;
 	}
 
 	/**
+	 * This method computes all possible moves on the board
+	 * 
+	 * @return
+	 * @throws IllegalBoardException
+	 */
+	public List<byte[]> getMyMoveList() throws IllegalBoardException {
+		List<byte[]> result = new ArrayList<byte[]>();
+
+		// test all fields...
+		for (byte i = 0; i < 64; i++) {
+			byte figureType = setup[i];
+			// my figure?
+			if (figureType > 0) {
+				Figure figure = createFigure(i);
+				// add all moves into the move list....
+				for (byte move : figure.getMoves()) {
+					byte[] amove = new byte[2];
+					amove[0] = i;
+					amove[1] = move;
+					result.add(amove);
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/**
 	 * Static method to convert field definition into byte
 	 * 
 	 * @param field
@@ -156,15 +186,13 @@ public class Board {
 	 * @throws IllegalMoveException
 	 * @throws IllegalBoardException
 	 */
-	public static byte getField(String field) throws IllegalBoardException {
-
+	public static byte getFieldIndex(String field) throws IllegalBoardException {
 		// convert field string
 		field = field.toLowerCase();
 		int line = field.charAt(0) - 'a' + 1;
 		int row = field.charAt(1) - '1' + 1;
 
-		return getField(line, row);
-
+		return getFieldIndex(line, row);
 	}
 
 	/**
@@ -174,15 +202,34 @@ public class Board {
 	 * @return
 	 * @throws IllegalMoveException
 	 */
-	public static byte getField(int line, int row) throws IllegalBoardException {
+	public static byte getFieldIndex(int line, int row)
+			throws IllegalBoardException {
 		// validate field
 		if (line < 1 || line > 8 || row < 1 || row > 8) {
 			throw new IllegalBoardException();
 		}
-
 		line--;
 		row--;
 		return (byte) (line + (row * 8));
+	}
 
+	/**
+	 * Converts the fieldindex (0-63) into the coresponding line component
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public static byte lineFromIndex(byte index) {
+		return (byte) (index - ((index / 8) * 8) + 1);
+	}
+
+	/**
+	 * Converts the fieldindex (0-63) into the coresponding row component
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public static byte rowFromIndex(byte index) {
+		return (byte) ((index / 8) + 1);
 	}
 }

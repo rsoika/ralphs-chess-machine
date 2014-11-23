@@ -40,15 +40,15 @@ public abstract class AbstractFigure implements Figure {
 		super();
 	}
 
-	public AbstractFigure(Board aboard, int line, int row, byte figureType) throws IllegalBoardException {
+	public AbstractFigure(Board aboard, byte fieldIndex, byte figureType) throws IllegalBoardException {
 		super();
 		// validate params
-		if (aboard.getFigure(line, row)!=figureType) {
+		if (aboard.getFigure(fieldIndex)!=figureType) {
 			throw new IllegalBoardException();
 		}
 		
-		this.row=(byte) row;
-		this.line=(byte) line;
+		this.row=Board.rowFromIndex(fieldIndex);
+		this.line=Board.lineFromIndex(fieldIndex);
 		this.figureType=figureType;
 
 		reset(aboard);
@@ -108,7 +108,7 @@ public abstract class AbstractFigure implements Figure {
 	 */
 	public void addMove(int line, int row) throws  IllegalBoardException {
 	
-		byte mov = Board.getField(line,row);
+		byte mov = Board.getFieldIndex(line,row);
 		if (!moves.contains(mov))
 			moves.add(mov);
 	}
