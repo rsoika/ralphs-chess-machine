@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.soika.chess.exceptions.IllegalBoardException;
-import com.soika.chess.figures.Bishop;
+import com.soika.chess.figures.Figure;
 
 /**
  * test move list for rook
@@ -37,7 +37,7 @@ public class BishopTest {
 
 		try {
 			board.placeFigure("B4", Board.BISHOP_ME);
-			Bishop bishop = (Bishop) board.createFigure("B4");
+			Figure bishop = board.createFigure("B4");
 			Assert.assertTrue(bishop.getMoves().contains(Board.getField("A5")));
 			
 			Assert.assertTrue(bishop.getMoves().contains(Board.getField("C5")));
@@ -73,7 +73,7 @@ public class BishopTest {
 		try {
 			board.placeFigure("B4", Board.BISHOP_ME);
 			board.placeFigure("e7", Board.PAWN_ME);
-			Bishop bishop = (Bishop) board.createFigure("B4");
+			Figure bishop = board.createFigure("B4");
 			Assert.assertTrue(bishop.getMoves().contains(Board.getField("A5")));
 			
 			Assert.assertTrue(bishop.getMoves().contains(Board.getField("C5")));
@@ -107,7 +107,7 @@ public class BishopTest {
 		try {
 			board.placeFigure("B4", Board.BISHOP_ME);
 			board.placeFigure("e7", Board.PAWN_YOURS);
-			Bishop bishop = (Bishop) board.createFigure("B4");
+			Figure bishop =  board.createFigure("B4");
 			Assert.assertTrue(bishop.getMoves().contains(Board.getField("A5")));
 			
 			Assert.assertTrue(bishop.getMoves().contains(Board.getField("C5")));

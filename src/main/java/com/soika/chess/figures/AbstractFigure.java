@@ -9,7 +9,8 @@ import com.soika.chess.exceptions.IllegalMoveException;
 
 /**
  * Abstract Figure class. Provides general move list for a figure. A figure is
- * always bound to a board. The board defines the basis for the move list
+ * always bound to a board. The board defines the basis for the move list.
+ * This class is extended by the concrete figure classes.
  * 
  * 
  * <code>
@@ -28,7 +29,7 @@ import com.soika.chess.exceptions.IllegalMoveException;
  * @author rsoika
  *
  */
-public abstract class AbstractFigure {
+public abstract class AbstractFigure implements Figure {
 
 	Board board;
 	byte figureType;
@@ -92,6 +93,7 @@ public abstract class AbstractFigure {
 	 * 
 	 * @return
 	 */
+	@Override
 	public List<Byte> getMoves() {
 		return moves;
 	}
@@ -128,9 +130,4 @@ public abstract class AbstractFigure {
 			moves.remove(mov);
 	}
 
-	/**
-	 * Abstract method to be overwritten be Figure classes. The method computes
-	 * the list of possible moves on the given board
-	 */
-	public abstract void computeMoves();
 }

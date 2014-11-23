@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.soika.chess.exceptions.IllegalBoardException;
-import com.soika.chess.figures.Rook;
+import com.soika.chess.figures.Figure;
 
 /**
  * test move list for rook
@@ -37,7 +37,7 @@ public class RookTest {
 
 		try {
 			board.placeFigure("A1", Board.ROOK_ME);
-			Rook rook = (Rook) board.createFigure("A1");
+			Figure rook = board.createFigure("A1");
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("A2")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("A3")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("A4")));
@@ -69,7 +69,7 @@ public class RookTest {
 
 		try {
 			board.placeFigure("h8", Board.ROOK_ME);
-			Rook rook = (Rook) board.createFigure("H8");
+			Figure rook = board.createFigure("H8");
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("h2")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("h3")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("h4")));
@@ -107,7 +107,7 @@ public class RookTest {
 
 		try {
 			board.placeFigure("B4", Board.ROOK_ME);
-			Rook rook = (Rook) board.createFigure("B4");
+			Figure rook = board.createFigure("B4");
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("B3")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("B2")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("B1")));
@@ -147,7 +147,7 @@ public class RookTest {
 		try {
 			board.placeFigure("B4", Board.ROOK_ME);
 			board.placeFigure("F4", Board.PAWN_ME);
-			Rook rook = (Rook) board.createFigure("B4");
+			Figure rook = board.createFigure("B4");
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("B3")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("B2")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("B1")));
@@ -184,7 +184,7 @@ public class RookTest {
 		try {
 			board.placeFigure("B4", Board.ROOK_ME);
 			board.placeFigure("F4", Board.PAWN_YOURS);
-			Rook rook = (Rook) board.createFigure("B4");
+			Figure rook = board.createFigure("B4");
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("B3")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("B2")));
 			Assert.assertTrue(rook.getMoves().contains(Board.getField("B1")));

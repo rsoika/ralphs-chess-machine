@@ -2,8 +2,8 @@ package com.soika.chess;
 
 import com.soika.chess.exceptions.IllegalBoardException;
 import com.soika.chess.exceptions.IllegalMoveException;
-import com.soika.chess.figures.AbstractFigure;
 import com.soika.chess.figures.Bishop;
+import com.soika.chess.figures.Figure;
 import com.soika.chess.figures.King;
 import com.soika.chess.figures.Knight;
 import com.soika.chess.figures.Pawn;
@@ -118,7 +118,7 @@ public class Board {
 		return setup[field];
 	}
 
-	public AbstractFigure createFigure(String field)
+	public Figure createFigure(String field)
 			throws IllegalBoardException {
 		// convert field string
 		field = field.toLowerCase();

@@ -10,8 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.soika.chess.exceptions.IllegalBoardException;
-import com.soika.chess.figures.King;
-import com.soika.chess.figures.Queen;
+import com.soika.chess.figures.Figure;
 
 /**
  * test move list for rook
@@ -56,7 +55,7 @@ public class KingTest {
 
 		try {
 			board.placeFigure("B4", Board.KING_ME);
-			King king = (King) board.createFigure("B4");
+			Figure king = board.createFigure("B4");
 			Assert.assertTrue(king.getMoves().contains(Board.getField("A3")));
 			Assert.assertTrue(king.getMoves().contains(Board.getField("A4")));
 			Assert.assertTrue(king.getMoves().contains(Board.getField("A5")));
@@ -107,7 +106,7 @@ public class KingTest {
 			board.placeFigure("B4", Board.KING_ME);
 			board.placeFigure("C4", Board.PAWN_ME);
 			board.placeFigure("C5", Board.ROOK_YOURS);
-			King king = (King) board.createFigure("B4");
+			Figure king = board.createFigure("B4");
 			Assert.assertTrue(king.getMoves().contains(Board.getField("A3")));
 			Assert.assertTrue(king.getMoves().contains(Board.getField("A4")));
 			Assert.assertTrue(king.getMoves().contains(Board.getField("A5")));
