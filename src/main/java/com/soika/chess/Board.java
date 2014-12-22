@@ -20,17 +20,18 @@ import com.soika.chess.figures.Rook;
  * http://www.wikihow.com/Play-Chess-for-Beginners
  * 
  * <code>
-	  ♔♕♖♗♘♙♚♛♜♝♞♟
-	  ┌───────────────┐
-	  │♜ ♞ ♝ ♚ ♛ ♝ ♞ ♜│
-	  │♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟│
-	  │               │
-	  │               │
-	  │               │
-	  │               │
-	  │♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙│
-	  │♖ ♘ ♗ ♔ ♕ ♗ ♘ ♖│
-	  └───────────────┘
+	   ♔♕♖♗♘♙♚♛♜♝♞♟
+	   ┌───────────────┐
+	 8 │♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜│
+	 7 │♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟│
+	 6 │               │
+	 5 │               │
+	 4 │               │
+	 3 │               │
+	 2 │♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙│
+	 1 │♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖│
+	   └───────────────┘
+	    A B C D E F G H
  * </code>
  * 
  * @author rsoika
@@ -73,7 +74,6 @@ public class Board {
 			// computer plays black?
 			if (this.getDirection() == DIRECTION_BLACK) {
 				placeFigure("A1", Board.ROOK_YOURS);
-
 				placeFigure("H1", Board.ROOK_YOURS);
 				placeFigure("A8", Board.ROOK_ME);
 				placeFigure("H8", Board.ROOK_ME);
@@ -115,8 +115,8 @@ public class Board {
 				// Setup computer plays white
 
 				placeFigure("A1", Board.ROOK_ME);
-
 				placeFigure("H1", Board.ROOK_ME);
+
 				placeFigure("A8", Board.ROOK_YOURS);
 				placeFigure("H8", Board.ROOK_YOURS);
 
@@ -177,6 +177,10 @@ public class Board {
 		byte figure = setup[from];
 		setup[from] = 0;
 		setup[to] = figure;
+	}
+	
+	public void move(String from, String to) throws IllegalBoardException {
+		move (getFieldIndex(from),getFieldIndex(to));
 	}
 
 	/**
@@ -408,5 +412,22 @@ public class Board {
 				return true;
 		}
 		return false;
+	}
+	
+	
+	/**
+	 * converts a move (byte array) into a readable string
+	 * 
+	 * e.g. byte[0],byte[1]  =>  A1B1
+	 * @param move
+	 * @return
+	 */
+	public static String moveToString(byte[] move) {
+		char c1 = (char) ('A' + Board.lineFromIndex(move[0]) - 1);
+		char c2 = (char) ('1' + Board.rowFromIndex(move[0]) - 1);
+		char c3 = (char) ('A' + Board.lineFromIndex(move[1]) - 1);
+		char c4 = (char) ('1' + Board.rowFromIndex(move[1]) - 1);
+
+		return ""+ c1 + c2 + "" + c3 + c4;
 	}
 }

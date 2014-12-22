@@ -107,12 +107,8 @@ public class Game {
 
 				byte[] myMove = myMoves.get(moveNumber);
 
-				char c1 = (char) ('A' + Board.lineFromIndex(myMove[0]) - 1);
-				char c2 = (char) ('1' + Board.rowFromIndex(myMove[0]) - 1);
-				char c3 = (char) ('A' + Board.lineFromIndex(myMove[1]) - 1);
-				char c4 = (char) ('1' + Board.rowFromIndex(myMove[1]) - 1);
-
-				print("               My move : " + c1 + c2 + "" + c3 + c4);
+			
+				print("               My move : " + Board.moveToString(myMove));
 				board.move(myMove[0], myMove[1]);
 			} catch (IllegalBoardException e) {
 				print("GameOver! (" + e.getMessage() + ")");

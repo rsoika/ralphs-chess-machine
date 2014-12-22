@@ -43,6 +43,43 @@ public class BoardTest {
 		}
 	}
 
+	
+	/**
+	 * Test coordiantes of Board
+	 */
+	@Test
+	public void testBoardInit() {
+
+		try {
+			
+			board.initNewGame();
+			Assert.assertTrue((0 == board.getFigure("A3")));
+			Assert.assertTrue((Board.PAWN_ME == board.getFigure("A2")));
+			Assert.assertTrue((Board.KING_YOURS == board.getFigure("E8")));
+		
+		} catch (IllegalBoardException e) {
+
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	
+	/**
+	 * Test coordiantes of Board
+	 */
+	@Test
+	public void testBoardMoveToString() {
+			board.initNewGame();
+			byte[] move = new byte[2];
+			move[0]=0;
+			move[1]=2;
+			Assert.assertEquals("A1C1",Board.moveToString(move));
+	}
+
+	
+	
+	
 	/**
 	 * test invalid call from createFigure
 	 */
