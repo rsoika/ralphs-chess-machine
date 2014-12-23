@@ -1,10 +1,5 @@
 package com.soika.chess;
 
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.logging.Logger;
-
 import com.soika.chess.exceptions.IllegalBoardException;
 
 /**
@@ -14,7 +9,6 @@ import com.soika.chess.exceptions.IllegalBoardException;
  */
 public class Printer {
 	Board board;
-	private final static Logger logger = Logger.getLogger(Printer.class.getName());
 
 	/**
 	 * prints the board
@@ -94,7 +88,6 @@ public class Printer {
 					if (line<8)
 					System.out.print(" ");
 				} catch (IllegalBoardException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
@@ -106,7 +99,7 @@ public class Printer {
 		print("        └───────────────┘");
 	}
 
-	private static void print(String message) {
+	public static void print(String message) {
 		// logger.info(message);
 		System.out.println(message);
 	}

@@ -75,6 +75,17 @@ public class BoardTest {
 			move[0]=0;
 			move[1]=2;
 			Assert.assertEquals("A1C1",Board.moveToString(move));
+			
+			// reverse test
+			try {
+				byte[] reverse=Board.stringToMove("A1C1");
+				
+				Assert.assertTrue(move[0]==reverse[0]);
+				Assert.assertTrue(move[1]==reverse[1]);
+			} catch (IllegalBoardException e) {
+				e.printStackTrace();
+				Assert.fail();
+			}
 	}
 
 	

@@ -1,5 +1,8 @@
 package com.soika.chess;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -14,7 +17,7 @@ public class Game {
 	private final static Logger logger = Logger.getLogger(Game.class.getName());
 
 	public static void main(String[] args) {
-
+		logger.fine("Game init");
 		Game tmp = Game.getInstance();
 		tmp.init();
 		tmp.play();
@@ -33,18 +36,18 @@ public class Game {
 	 */
 	public void init() {
 
-		print("*************************");
-		print("* Ralphs Chess Maschine *");
-		print("* V0.0.1                *");
-		print("*************************");
+		Printer.print("*************************");
+		Printer.print("* Ralphs Chess Maschine *");
+		Printer.print("* V0.0.1                *");
+		Printer.print("*************************");
 
 		userInput = new Scanner(System.in);
 
 		board = new Board(Board.DIRECTION_BLACK);
-		print("Setup the board...");
+		Printer.print("Setup the board...");
 
 		board.initNewGame();
-		print("Lets play...");
+		Printer.print("Lets play...");
 
 	}
 
@@ -59,13 +62,13 @@ public class Game {
 
 			// print board?
 			if (sMove.toLowerCase().startsWith("p")) {
-				printBoard();
+				Printer.printBoard(board);
 				continue;
 			}
 
 			// validate move
 			if (sMove.length() > 4) {
-				print("Illegal move!");
+				Printer.print("Illegal move!");
 				continue;
 			}
 
@@ -73,16 +76,16 @@ public class Game {
 			byte moveFrom;
 			byte moveTo;
 			try {
-				moveFrom = board.getFieldIndex(sMove.substring(0, 2));
-				moveTo = board.getFieldIndex(sMove.substring(2));
+				moveFrom = Board.getFieldIndex(sMove.substring(0, 2));
+				moveTo = Board.getFieldIndex(sMove.substring(2));
 				if (!Board.isValidMove(board.getYoursMoveList(), moveFrom,
 						moveTo)) {
-					print("Illegal move!");
+					Printer.print("Illegal move!");
 					continue;
 				}
 
 			} catch (IllegalBoardException e) {
-				print("Illegal move! (" + e.getMessage() + ")");
+				Printer.print("Illegal move! (" + e.getMessage() + ")");
 				// logger.severe(e.toString());
 				continue;
 			}
@@ -95,28 +98,71 @@ public class Game {
 			try {
 				long l = System.currentTimeMillis();
 				List<byte[]> myMoves = board.getMyMoveList();
-				print("....." + myMoves.size() + " moves found in : "
+				Printer.print("....." + myMoves.size() + " moves found in : "
 						+ (System.currentTimeMillis() - l) + "ms");
 				if (myMoves.size() == 0) {
-					print("You won!!! ");
+					Printer.print("You won!!! ");
 					break;
 				}
+				
+				 l = System.currentTimeMillis();
+				 List<Analyzer> bestMoves= analyzeMoves(myMoves);
 
+				 Printer.print("....." + bestMoves.size() + " usefull moves analysed in : "
+							+ (System.currentTimeMillis() - l) + "ms");
+				 
 				// randomize a move....
-				int moveNumber = randInt(0, myMoves.size() - 1);
+				int moveNumber = randInt(0, bestMoves.size() - 1);
 
-				byte[] myMove = myMoves.get(moveNumber);
+				Analyzer myAnalyzedMove = bestMoves.get(moveNumber);
+				
+				
 
-			
-				print("               My move : " + Board.moveToString(myMove));
-				board.move(myMove[0], myMove[1]);
+				Printer.print("               My move : "
+						+ Board.moveToString(myAnalyzedMove.getMove()));
+				board.move(myAnalyzedMove.getMove()[0], myAnalyzedMove.getMove()[1]);
 			} catch (IllegalBoardException e) {
-				print("GameOver! (" + e.getMessage() + ")");
+				Printer.print("GameOver! (" + e.getMessage() + ")");
 				break;
 			}
 
 		}
-		print("Goodby...");
+		Printer.print("Thanks for palying - Goodby...");
+	}
+
+	/**
+	 * This method analyzes a list of moves and returns the list with the best
+	 * moves (worst moves are removed)
+	 * 
+	 * @param moves
+	 * @throws IllegalBoardException
+	 */
+	public List<Analyzer> analyzeMoves(List<byte[]> moves) throws IllegalBoardException {
+		Printer.print("Start analyizing.....");
+		List<Analyzer> analyzerList = new ArrayList<Analyzer>();
+		List<Analyzer> bestMoves = new ArrayList<Analyzer>();
+
+		for (byte[] move : moves) {
+			analyzerList.add( new Analyzer(board, move));
+
+		}
+		
+		// sort moves by worst case
+		Collections.sort(analyzerList, new AnalyzerComparator());
+		Analyzer bestAnalyzer=null;
+		for (Analyzer a: analyzerList) {
+			if (bestAnalyzer==null || bestAnalyzer.getResult()>(a.getResult()-1)) {
+				bestMoves.add(a);
+				bestAnalyzer=a;
+			} else {
+				// not more good moves
+				break;
+			}
+		}
+		
+		
+		
+		return bestMoves;
 	}
 
 	/**
@@ -144,98 +190,16 @@ public class Game {
 		return randomNum;
 	}
 
-	/**
-	 * prints the board
-	 * 
-	 * <code>
-	  ♔♕♖♗♘♙♚♛♜♝♞♟
-	    A B C D E F G H
-	   ┌───────────────┐
-	 8 │♜ ♞ ♝ ♚ ♛ ♝ ♞ ♜│
-	 7 │♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟│
-	 6 │               │
-	 5 │               │
-	 4 │               │
-	 3 │               │
-	 2 │♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙│
-	 1 │♖ ♘ ♗ ♔ ♕ ♗ ♘ ♖│
-	   └───────────────┘
-	 * </code>
-	 * 
-	 * @throws IllegalBoardException
-	 */
-	private void printBoard() {
+	
+	public class AnalyzerComparator implements Comparator<Analyzer> {
 
-		print("         A B C D E F G H");
-		print("        ┌───────────────┐");
+	    public int compare(Analyzer a1, Analyzer a2){
+	    	
 
-		for (int row = 8; row > 0; row--) {
-
-			System.out.print("      " + row + " │");
-			for (int line = 1; line < 9; line++) {
-				try {
-					byte figure = board.getFigure(line, row);
-
-					switch (figure) {
-					case Board.ROOK_ME:
-						System.out.print("♜");
-						break;
-					case Board.KNIGHT_ME:
-						System.out.print("♞");
-						break;
-					case Board.BISHOP_ME:
-						System.out.print("♝");
-						break;
-					case Board.QUEEN_ME:
-						System.out.print("♛");
-						break;
-					case Board.KING_ME:
-						System.out.print("♚");
-						break;
-					case Board.PAWN_ME:
-						System.out.print("♟");
-						break;
-							
-					case Board.ROOK_YOURS:
-						System.out.print("♖");
-						break;
-					case Board.KNIGHT_YOURS:
-						System.out.print("♘");
-						break;
-					case Board.BISHOP_YOURS:
-						System.out.print("♗");
-						break;
-					case Board.QUEEN_YOURS:
-						System.out.print("♕");
-						break;
-					case Board.KING_YOURS:
-						System.out.print("♔");
-						break;
-					case Board.PAWN_YOURS:
-						System.out.print("♙");
-						break;
-
-					default:
-						System.out.print(" ");
-					}
-
-					if (line<8)
-					System.out.print(" ");
-				} catch (IllegalBoardException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-
-			System.out.println("│");
-		}
-
-		print("        └───────────────┘");
+	    	
+	       return a2.getResult() - a1.getResult();
+	    }
 	}
-
-	private static void print(String message) {
-		// logger.info(message);
-		System.out.println(message);
-	}
+	
+	
 }

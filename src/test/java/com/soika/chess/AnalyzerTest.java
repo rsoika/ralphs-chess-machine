@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.soika.chess.exceptions.IllegalBoardException;
-import com.soika.chess.figures.Figure;
 
 /**
  * test move list for rook
@@ -66,19 +65,20 @@ public class AnalyzerTest {
 			
 			logger.info("start bad move...");
 			// analyze bad move...
-			Analyzer analyzerBad = new Analyzer(board, Board.getFieldIndex("C7"),
-					Board.getFieldIndex("C5"));
-//			
+			Analyzer analyzerBad = new Analyzer(board, Board.stringToMove(
+					"C7C5"));
+		
 			
 			Assert.assertTrue((Board.PAWN_YOURS == board.getFigure("D4")));
 			Assert.assertTrue((Board.PAWN_ME == board.getFigure("C7")));
 		
 			logger.info("start good move...");
 			// analyse good ove..
-			Analyzer analyzerGood = new Analyzer(board, Board.getFieldIndex("D7"),
-					Board.getFieldIndex("D5"));
+			Analyzer analyzerGood = new Analyzer(board, Board.stringToMove("D7D5"));
 			
 			
+			
+			Assert.assertTrue(analyzerBad.getResult()<analyzerGood.getResult());
 			
 			//analyzer.computeNextMove();
 
@@ -94,6 +94,59 @@ public class AnalyzerTest {
 
 	}
 
+	
+	
+	/**
+	 *
+	 * <code>
+	  ♔♕♖♗♘♙♚♛♜♝♞♟
+	   ┌───────────────┐
+	 8 │  ♚            │
+	 7 │               │
+	 6 │               │
+	 5 │               │
+	 4 │               │
+	 3 │               │
+	 2 │               │
+	 1 │♖              │
+	   └───────────────┘
+	    A B C D E F G H
+	 * </code>
+	 * 
+	 * This test tests if after D2D4, C7C5 is a good or bad move
+	 */
+	@Test
+	public void testSimple_KingTest() {
+
+		try {
+
+			board = new Board(Board.DIRECTION_BLACK);
+			
+			board.placeFigure("A1", Board.ROOK_YOURS);
+			board.placeFigure("B8", Board.KING_ME);
+			
+			int figure=board.getFigure("B8");
+			System.out.println("figure=" + figure);
+			
+			logger.info("start bad move...");
+			// analyze bad move...
+			Analyzer analyzerBad = new Analyzer(board, Board.stringToMove(
+					"B8A8"));
+		
+			logger.info("start good move...");
+			// analyse good ove..
+			Analyzer analyzerGood = new Analyzer(board, Board.stringToMove("B8C8"));
+			Assert.assertTrue(analyzerBad.getResult()<analyzerGood.getResult());
+			
+
+		} catch (IllegalBoardException e) {
+			fail();
+			e.printStackTrace();
+		}
+
+	}
+
+	
 	/**
 	 * tests the doMovePath and undoMovePath feature
 	 */
@@ -105,8 +158,7 @@ public class AnalyzerTest {
 			// add path
 			Move[] movelist = new Move[3];
 
-			Analyzer analyzer = new Analyzer(board, Board.getFieldIndex("e2"),
-					Board.getFieldIndex("e4"));
+			Analyzer analyzer = new Analyzer(board, Board.stringToMove("e2e4"));
 
 			Move amove1 = analyzer.doMove(Board.getFieldIndex("d7"),
 					Board.getFieldIndex("d5"));

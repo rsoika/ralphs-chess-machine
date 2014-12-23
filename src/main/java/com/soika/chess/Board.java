@@ -178,9 +178,9 @@ public class Board {
 		setup[from] = 0;
 		setup[to] = figure;
 	}
-	
+
 	public void move(String from, String to) throws IllegalBoardException {
-		move (getFieldIndex(from),getFieldIndex(to));
+		move(getFieldIndex(from), getFieldIndex(to));
 	}
 
 	/**
@@ -413,12 +413,12 @@ public class Board {
 		}
 		return false;
 	}
-	
-	
+
 	/**
 	 * converts a move (byte array) into a readable string
 	 * 
-	 * e.g. byte[0],byte[1]  =>  A1B1
+	 * e.g. byte[0],byte[1] => A1B1
+	 * 
 	 * @param move
 	 * @return
 	 */
@@ -428,6 +428,19 @@ public class Board {
 		char c3 = (char) ('A' + Board.lineFromIndex(move[1]) - 1);
 		char c4 = (char) ('1' + Board.rowFromIndex(move[1]) - 1);
 
-		return ""+ c1 + c2 + "" + c3 + c4;
+		return "" + c1 + c2 + "" + c3 + c4;
+	}
+
+	/**
+	 * converts a string into a byte array e.g. A1B1 => byte[0],byte[1]
+	 * 
+	 * @param move
+	 * @return
+	 * @throws IllegalBoardException 
+	 */
+	public static byte[] stringToMove(String smove) throws IllegalBoardException {
+		byte[] result = { getFieldIndex(smove.substring(0, 2)),
+				getFieldIndex(smove.substring(2, 4)) };
+		return result;
 	}
 }
