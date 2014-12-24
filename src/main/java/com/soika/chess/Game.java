@@ -18,9 +18,14 @@ public class Game {
 
 	public static void main(String[] args) {
 		logger.fine("Game init");
+
+		// set log level
+		// Analyzer.logger.setLevel(Level.FINE);
+
 		Game tmp = Game.getInstance();
 		tmp.init();
 		tmp.play();
+
 	}
 
 	/* Static 'instance' method */
@@ -36,18 +41,19 @@ public class Game {
 	 */
 	public void init() {
 
-		Printer.print("*************************");
-		Printer.print("* Ralphs Chess Maschine *");
-		Printer.print("* V0.0.1                *");
-		Printer.print("*************************");
+		Printer.print("*************************", Printer.LOGLEVEL_INFO);
+		Printer.print("* Ralphs Chess Maschine *", Printer.LOGLEVEL_INFO);
+		Printer.print("* V0.0.1                *", Printer.LOGLEVEL_INFO);
+		Printer.print("*************************", Printer.LOGLEVEL_INFO);
 
 		userInput = new Scanner(System.in);
 
 		board = new Board(Board.DIRECTION_BLACK);
-		Printer.print("Setup the board...");
+		Printer.print("Setup the board...", Printer.LOGLEVEL_INFO);
 
 		board.initNewGame();
-		Printer.print("Lets play...");
+		Printer.print("Lets play...", Printer.LOGLEVEL_INFO);
+		Printer.printBoard(board, Printer.LOGLEVEL_INFO);
 
 	}
 
@@ -60,15 +66,33 @@ public class Game {
 			if (sMove.toLowerCase().startsWith("q"))
 				break;
 
+			// Loglevel?
+			if (sMove.toLowerCase().equals("l0")) {
+				Printer.logLevel = Printer.LOGLEVEL_INFO;
+				Printer.print("Changed Loglevel to INFO", Printer.LOGLEVEL_INFO);
+				continue;
+			}
+			if (sMove.toLowerCase().equals("l1")) {
+				Printer.logLevel = Printer.LOGLEVEL_FINE;
+				Printer.print("Changed Loglevel to FINE", Printer.LOGLEVEL_FINE);
+				continue;
+			}
+			if (sMove.toLowerCase().equals("l2")) {
+				Printer.logLevel = Printer.LOGLEVEL_FINEST;
+				Printer.print("Changed Loglevel to FINEST",
+						Printer.LOGLEVEL_FINEST);
+				continue;
+			}
+
 			// print board?
 			if (sMove.toLowerCase().startsWith("p")) {
-				Printer.printBoard(board);
+				Printer.printBoard(board, Printer.LOGLEVEL_INFO);
 				continue;
 			}
 
 			// validate move
 			if (sMove.length() > 4) {
-				Printer.print("Illegal move!");
+				Printer.print("Illegal move!", Printer.LOGLEVEL_INFO);
 				continue;
 			}
 
@@ -80,12 +104,13 @@ public class Game {
 				moveTo = Board.getFieldIndex(sMove.substring(2));
 				if (!Board.isValidMove(board.getYoursMoveList(), moveFrom,
 						moveTo)) {
-					Printer.print("Illegal move!");
+					Printer.print("Illegal move!", Printer.LOGLEVEL_INFO);
 					continue;
 				}
 
 			} catch (IllegalBoardException e) {
-				Printer.print("Illegal move! (" + e.getMessage() + ")");
+				Printer.print("Illegal move! (" + e.getMessage() + ")",
+						Printer.LOGLEVEL_INFO);
 				// logger.severe(e.toString());
 				continue;
 			}
@@ -99,35 +124,42 @@ public class Game {
 				long l = System.currentTimeMillis();
 				List<byte[]> myMoves = board.getMyMoveList();
 				Printer.print("....." + myMoves.size() + " moves found in : "
-						+ (System.currentTimeMillis() - l) + "ms");
+						+ (System.currentTimeMillis() - l) + "ms",
+						Printer.LOGLEVEL_INFO);
 				if (myMoves.size() == 0) {
-					Printer.print("You won!!! ");
+					Printer.print("You won!!! ", Printer.LOGLEVEL_INFO);
 					break;
 				}
-				
-				 l = System.currentTimeMillis();
-				 List<Analyzer> bestMoves= analyzeMoves(myMoves);
 
-				 Printer.print("....." + bestMoves.size() + " usefull moves analysed in : "
-							+ (System.currentTimeMillis() - l) + "ms");
-				 
+				l = System.currentTimeMillis();
+				List<Analyzer> bestMoves = analyzeMoves(myMoves);
+
+				Printer.print(
+						"....." + bestMoves.size()
+								+ " usefull moves analysed in : "
+								+ (System.currentTimeMillis() - l) + "ms",
+						Printer.LOGLEVEL_INFO);
+
 				// randomize a move....
 				int moveNumber = randInt(0, bestMoves.size() - 1);
 
 				Analyzer myAnalyzedMove = bestMoves.get(moveNumber);
-				
-				
 
-				Printer.print("               My move : "
-						+ Board.moveToString(myAnalyzedMove.getMove()));
-				board.move(myAnalyzedMove.getMove()[0], myAnalyzedMove.getMove()[1]);
+				board.move(myAnalyzedMove.getMove()[0],
+						myAnalyzedMove.getMove()[1]);
+				Printer.printBoard(board, Printer.LOGLEVEL_INFO);
+				Printer.print(
+						"               My move : "
+								+ Board.moveToString(myAnalyzedMove.getMove()),
+						Printer.LOGLEVEL_INFO);
 			} catch (IllegalBoardException e) {
-				Printer.print("GameOver! (" + e.getMessage() + ")");
+				Printer.print("GameOver! (" + e.getMessage() + ")",
+						Printer.LOGLEVEL_INFO);
 				break;
 			}
 
 		}
-		Printer.print("Thanks for palying - Goodby...");
+		Printer.print("Thanks for palying - Goodby...", Printer.LOGLEVEL_INFO);
 	}
 
 	/**
@@ -137,31 +169,48 @@ public class Game {
 	 * @param moves
 	 * @throws IllegalBoardException
 	 */
-	public List<Analyzer> analyzeMoves(List<byte[]> moves) throws IllegalBoardException {
-		Printer.print("Start analyizing.....");
+	public List<Analyzer> analyzeMoves(List<byte[]> moves)
+			throws IllegalBoardException {
+		Printer.print("Start analyizing.....", Printer.LOGLEVEL_INFO);
 		List<Analyzer> analyzerList = new ArrayList<Analyzer>();
 		List<Analyzer> bestMoves = new ArrayList<Analyzer>();
 
+		Printer.print("Game: Moves analyed: ", Printer.LOGLEVEL_FINE);
 		for (byte[] move : moves) {
-			analyzerList.add( new Analyzer(board, move));
-
+			Analyzer a = new Analyzer(board, move);
+			analyzerList.add(a);			
 		}
-		
-		// sort moves by worst case
+		// sort moves...
 		Collections.sort(analyzerList, new AnalyzerComparator());
-		Analyzer bestAnalyzer=null;
-		for (Analyzer a: analyzerList) {
-			if (bestAnalyzer==null || bestAnalyzer.getResult()>(a.getResult()-1)) {
+		
+		// print sorted move list
+		if (Printer.logLevel>=Printer.LOGLEVEL_FINE) {
+			for (Analyzer a : analyzerList) {
+				Printer.print("      : " + Board.moveToString(a.move) + "="
+						+ a.result, Printer.LOGLEVEL_FINE);
+			}
+		}
+
+		// get best moves ...
+		Printer.print("Game: get best moves: ", Printer.LOGLEVEL_FINE);
+		Analyzer bestAnalyzer = null;
+		for (Analyzer a : analyzerList) {
+			if (bestAnalyzer == null
+					|| (! (a.getResult()<bestAnalyzer.getResult()) ) ) {
 				bestMoves.add(a);
-				bestAnalyzer=a;
+				bestAnalyzer = a;
+				Printer.print("      : " + Board.moveToString(a.move) + "="
+						+ a.result, Printer.LOGLEVEL_FINE);
 			} else {
 				// not more good moves
+				
+				Printer.print(" stop sorting best mvoes. Last move checked: " + Board.moveToString(a.move) + "="
+						+ a.result, Printer.LOGLEVEL_FINE);
+				
 				break;
 			}
 		}
-		
-		
-		
+
 		return bestMoves;
 	}
 
@@ -190,16 +239,12 @@ public class Game {
 		return randomNum;
 	}
 
-	
 	public class AnalyzerComparator implements Comparator<Analyzer> {
 
-	    public int compare(Analyzer a1, Analyzer a2){
-	    	
+		public int compare(Analyzer a1, Analyzer a2) {
 
-	    	
-	       return a2.getResult() - a1.getResult();
-	    }
+			return a2.getResult() - a1.getResult();
+		}
 	}
-	
-	
+
 }

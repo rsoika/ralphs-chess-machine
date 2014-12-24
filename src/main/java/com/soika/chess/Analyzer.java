@@ -2,6 +2,7 @@ package com.soika.chess;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.soika.chess.exceptions.IllegalBoardException;
@@ -29,9 +30,6 @@ public class Analyzer {
 	int result = 0;
 	byte[] move;
 
-	private final static Logger logger = Logger.getLogger(Analyzer.class
-			.getName());
-
 	public Analyzer(final Board aboard, byte[] amove)
 			throws IllegalBoardException {
 		super();
@@ -44,10 +42,12 @@ public class Analyzer {
 		this.board.setup = aboard.setup.clone();
 
 		doMove(amove[0],amove[1]);
-		Printer.printBoard(this.board);
+		Printer.printBoard(this.board,Printer.LOGLEVEL_FINEST);
 		// now start computing all possible reactions and give each reaction a
 		// rating
 		List<byte[]> moveList = board.getYoursMoveList();
+		Printer.print("Analyzer: comuting possible reactions...",Printer.LOGLEVEL_FINEST);
+
 		// now play each move and rate it.....
 		for (int i = 0; i < moveList.size(); i++) {
 			// now compute next half move for each move....
@@ -56,8 +56,8 @@ public class Analyzer {
 			int currentresult = rateBoard();
 			// Log result
 			String sMove = Board.moveToString(moveList.get(i));
-			System.out.println("Analyzer: " + sMove + ": rating ="
-					+ currentresult);
+			Printer.print("Analyzer: " + sMove + ": rating ="
+					+ currentresult,Printer.LOGLEVEL_FINEST);
 
 			if (currentresult < result)
 				result = currentresult;
@@ -66,7 +66,7 @@ public class Analyzer {
 			undoMove(yourMove);
 		}
 
-		logger.fine("Analyzer finished");
+		Printer.print("Analyzer finished",Printer.LOGLEVEL_FINEST);
 	}
 
 	public Board getBoard() {
@@ -146,11 +146,70 @@ public class Analyzer {
 	public int rateBoard() {
 		int result = 0;
 		for (byte i = 0; i < 64; i++) {
-			result += board.getFigure(i);
+			result +=rateFigure( board.getFigure(i));
 
 		}
 
 		return result;
 	}
 
+	
+	
+	/**
+	 * This method rates a single figure 
+	 * 
+	 * not very tricky so far....
+	 * @return
+	 */
+	public byte rateFigure(byte figure) {
+		
+		byte figureRating=0;
+		
+		switch (figure) {
+		case Board.ROOK_ME:
+			figureRating=5;
+			break;
+		case Board.KNIGHT_ME:
+			figureRating=3;
+			break;
+		case Board.BISHOP_ME:
+			figureRating=3;
+			break;
+		case Board.QUEEN_ME:
+			figureRating=9;
+			break;
+		case Board.KING_ME:
+			figureRating=127;
+			break;
+		case Board.PAWN_ME:
+			figureRating=1;
+			break;
+				
+		case Board.ROOK_YOURS:
+			figureRating=-5;
+			break;
+		case Board.KNIGHT_YOURS:
+			figureRating=-3;
+			break;
+		case Board.BISHOP_YOURS:
+			figureRating=-3;
+			break;
+		case Board.QUEEN_YOURS:
+			figureRating=-9;
+			break;
+		case Board.KING_YOURS:
+			figureRating=-127;
+			break;
+		case Board.PAWN_YOURS:
+			figureRating=-1;
+			break;
+
+		default:
+			// no op
+		}
+		
+		
+		return figureRating;
+		
+	}
 }

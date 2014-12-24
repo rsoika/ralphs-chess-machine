@@ -1,5 +1,7 @@
 package com.soika.chess;
 
+import java.util.logging.Level;
+
 import com.soika.chess.exceptions.IllegalBoardException;
 
 /**
@@ -8,7 +10,23 @@ import com.soika.chess.exceptions.IllegalBoardException;
  *
  */
 public class Printer {
-	Board board;
+	static byte logLevel=0;
+	
+	public final static byte LOGLEVEL_INFO=0;
+	public final static byte LOGLEVEL_FINE=1;
+	public final static byte LOGLEVEL_FINEST=2;
+	public final static byte LOGLEVEL_DEBUG=3;
+	
+	
+	public int getLogLevel() {
+		return logLevel;
+	}
+
+	public void setLogLevel(byte logLevel) {
+		Printer.logLevel = logLevel;
+		
+		
+	}
 
 	/**
 	 * prints the board
@@ -30,10 +48,13 @@ public class Printer {
 	 * 
 	 * @throws IllegalBoardException
 	 */
-	public static void printBoard(Board board) {
+	public static void printBoard(Board board,byte alogLevel) {
 
-		print("         A B C D E F G H");
-		print("        ┌───────────────┐");
+		if (alogLevel>logLevel)
+			return;
+		
+		System.out.println("         A B C D E F G H");
+		System.out.println("        ┌───────────────┐");
 
 		for (int row = 8; row > 0; row--) {
 
@@ -96,10 +117,12 @@ public class Printer {
 			System.out.println("│");
 		}
 
-		print("        └───────────────┘");
+		System.out.println("        └───────────────┘");
 	}
 
-	public static void print(String message) {
+	public static void print(String message,byte alogLevel) {
+		if (alogLevel>logLevel)
+			return;
 		// logger.info(message);
 		System.out.println(message);
 	}
