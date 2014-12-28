@@ -1,9 +1,6 @@
 package com.soika.chess;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.soika.chess.exceptions.IllegalBoardException;
 
@@ -19,19 +16,26 @@ import com.soika.chess.exceptions.IllegalBoardException;
  * the Analyzer computes any possible reaction and rates the new situation. Each
  * Move becomes a rating which can be used for further analysis.
  * 
+ * 
+ * http://de.wikibooks.org/wiki/Java_Standard:_Threads
+ * 
  * @author rsoika
  *
  */
-public class Analyzer {
+public class Analyzer implements Runnable {
 
 	// byte[] setup;
 	Board board;
-	List<Move[]> paths;
-	int result = 0;
+//	List<Move[]> paths;
+	int result = KING_LOST;
 	byte[] move;
-	public final static byte KING_LOST=-88;
+	byte depth=0;
+	public final static byte KING_LOST = -88;
 
 	/**
+	 * Given a board and a move the analyzer compute all possible reactions and
+	 * rates the move based on worst situation which can happen.
+	 * 
 	 * If one reaction move takes the king we can cancel the analyze process
 	 * 
 	 * @param aboard
@@ -44,16 +48,50 @@ public class Analyzer {
 
 		this.move = amove;
 		result = 0;
-		paths = new ArrayList<Move[]>();
-		this.board = new Board(aboard.direction);
+		//paths = new ArrayList<Move[]>();
+
 		// clone board...
+		this.board = new Board(aboard.direction);
 		this.board.setup = aboard.setup.clone();
 
 		doMove(amove[0], amove[1]);
-		Printer.printBoard(this.board, Printer.LOGLEVEL_FINEST);
+	
+	
+		
+	//	run();
+		
+		
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Isolated code for analyze process 
+	 * @throws IllegalBoardException 
+	 */
+	@Override 
+	public void run() {
+		Printer.print("Analyzer started", Printer.LOGLEVEL_FINEST);
 		// now start computing all possible reactions and give each reaction a
 		// rating
-		List<byte[]> moveList = board.getYoursMoveList();
+		
+//		 for ( int i = 0; i < 200; i++ ) {
+//			 Date d= new java.util.Date();
+//		    if (d!=null)  System.out.print("." );
+//		 }
+		 
+		
+		List<byte[]> moveList;
+		try {
+			moveList = board.getYoursMoveList();
+		} catch (IllegalBoardException e) {
+			Printer.print("Analyzer error analyzing move list: "+e.getMessage(),
+					Printer.LOGLEVEL_INFO);
+			e.printStackTrace();
+			return;
+		}
 		Printer.print("Analyzer: computing possible reactions...",
 				Printer.LOGLEVEL_FINEST);
 
@@ -77,14 +115,19 @@ public class Analyzer {
 			// if we lost king we can stop
 			if (result < KING_LOST) {
 				// we should give up?
-				result=KING_LOST;
+				result = KING_LOST;
 				break;
 			}
 
 		}
-
+		depth++;
 		Printer.print("Analyzer finished", Printer.LOGLEVEL_FINEST);
 	}
+	
+	
+	
+	
+	
 
 	public Board getBoard() {
 		return board;
@@ -109,7 +152,7 @@ public class Analyzer {
 	 * 
 	 * @param move
 	 */
-	public Move doMove(byte from, byte to) {
+	Move doMove(byte from, byte to) {
 		Move move = new Move(board, from, to);
 		board.move(from, to);
 		return move;
@@ -121,34 +164,34 @@ public class Analyzer {
 	 * @param path
 	 *            - array of moves to be done
 	 */
-	public void doMovePath(Move[] path) {
-
-		for (Move amove : path) {
-			if (amove != null)
-				doMove(amove.from, amove.to);
-			else
-				break;
-		}
-
-	}
+//	public void doMovePath(Move[] path) {
+//
+//		for (Move amove : path) {
+//			if (amove != null)
+//				doMove(amove.from, amove.to);
+//			else
+//				break;
+//		}
+//
+//	}
 
 	/**
 	 * reverts a path of moves on the board. (restores also a hit figure)
 	 */
-	public void undoMovePath(Move[] path) {
-		// revert board;
-		for (int i = path.length; --i >= 0;) {
-			if (path[i] != null)
-				undoMove(path[i]);
-			else
-				continue;
-		}
-	}
+//	public void undoMovePath(Move[] path) {
+//		// revert board;
+//		for (int i = path.length; --i >= 0;) {
+//			if (path[i] != null)
+//				undoMove(path[i]);
+//			else
+//				continue;
+//		}
+//	}
 
 	/**
 	 * reverts a move on the board. (restores also a hit figure)
 	 */
-	public void undoMove(Move move) {
+	void undoMove(Move move) {
 		board.move(move.to, move.from);
 		board.setup[move.to] = move.targetFigure;
 	}
@@ -160,7 +203,7 @@ public class Analyzer {
 	 * 
 	 * @return
 	 */
-	public int rateBoard() {
+	private int rateBoard() {
 		int result = 0;
 		for (byte i = 0; i < 64; i++) {
 			result += rateFigure(board.getFigure(i));
@@ -177,7 +220,7 @@ public class Analyzer {
 	 * 
 	 * @return
 	 */
-	public byte rateFigure(byte figure) {
+	private byte rateFigure(byte figure) {
 
 		byte figureRating = 0;
 

@@ -121,7 +121,16 @@ public class Game {
 			try {
 				Analyzer myAnalyzedMove;
 				try {
-					myAnalyzedMove = chessMashine.computeBestMove(board);
+					chessMashine.start(board);
+
+					 try {
+					 Printer.print("let me think just a second....", Printer.LOGLEVEL_INFO);
+					 Thread.sleep(1000);
+					 } catch(InterruptedException ex) {
+					 Thread.currentThread().interrupt();
+					 }
+					myAnalyzedMove = chessMashine.stop();
+
 
 					board.move(myAnalyzedMove.getMove()[0],
 							myAnalyzedMove.getMove()[1]);

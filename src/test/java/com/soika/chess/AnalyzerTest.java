@@ -193,17 +193,17 @@ public class AnalyzerTest {
 			
 			
 			// now move the full path...
-			analyzer.doMovePath(movelist);
-			// test queen on d5
-			Assert.assertTrue((Board.QUEEN_ME == analyzer.getBoard().getFigure(
-					"D5")));
-			
-			// now undo full pth
-			analyzer.undoMovePath(movelist);
-			Assert.assertTrue((Board.QUEEN_ME == analyzer.getBoard().getFigure(
-					"D8")));
-			Assert.assertTrue((Board.PAWN_YOURS == analyzer.getBoard().getFigure(
-					"E4")));
+//			analyzer.doMovePath(movelist);
+//			// test queen on d5
+//			Assert.assertTrue((Board.QUEEN_ME == analyzer.getBoard().getFigure(
+//					"D5")));
+//			
+//			// now undo full pth
+//			analyzer.undoMovePath(movelist);
+//			Assert.assertTrue((Board.QUEEN_ME == analyzer.getBoard().getFigure(
+//					"D8")));
+//			Assert.assertTrue((Board.PAWN_YOURS == analyzer.getBoard().getFigure(
+//					"E4")));
 
 		} catch (IllegalBoardException e) {
 			fail();

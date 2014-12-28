@@ -10,63 +10,71 @@ import com.soika.chess.exceptions.CheckMateException;
 import com.soika.chess.exceptions.IllegalBoardException;
 import com.soika.chess.exceptions.RemisException;
 
+/**
+ * This class implements the main code to analyze a move. The ChessMashine can
+ * be started and stopped after a some seconds of thinking.
+ * 
+ * After the chessMashine has started, the class instantiates for each possible
+ * move a Analyzer class which is running a deep analyzes.
+ * 
+ * When the method stop is called, the chessMashine stops all Analyzers and
+ * returns the best Move found so far.
+ * 
+ * 
+ * @author rsoika
+ *
+ */
 public class ChessMashine {
 
-	public Analyzer computeBestMove(Board board) throws RemisException, IllegalBoardException, CheckMateException {
-		// now computer moves...
-
-		long l = System.currentTimeMillis();
-		List<byte[]> myMoves = board.getMyMoveList();
-		Printer.print(
-				"....." + myMoves.size() + " moves found in : "
-						+ (System.currentTimeMillis() - l) + "ms",
-				Printer.LOGLEVEL_INFO);
-		if (myMoves.size() == 0) {
-			throw new RemisException();
-		}
-
-		l = System.currentTimeMillis();
-		List<Analyzer> bestMoves = analyzeMoves(myMoves,board);
-
-		// moves found?
-		if (!(bestMoves.size() > 0)) {
-			throw new CheckMateException();
-		}
-
-		Printer.print("....." + bestMoves.size()
-				+ " usefull moves analysed in : "
-				+ (System.currentTimeMillis() - l) + "ms",
-				Printer.LOGLEVEL_INFO);
-
-		// randomize a move....
-		int moveNumber = randInt(0, bestMoves.size() - 1);
-
-		Analyzer myAnalyzedMove = bestMoves.get(moveNumber);
-		
-		return myAnalyzedMove;
-	}
-
-	
-
-	
+	List<Analyzer> analyzerList = null;
+	List<Thread> threadList = null;
+	long startTime;
 
 	/**
-	 * This method analyzes a list of moves and returns the list with the best
-	 * moves (worst moves are removed)
+	 * This method starts for each possible move an analyzer. The Analyzer runs
+	 * as a backend tread and tries to find out how good the move is.
+	 * 
+	 * 
+	 * es a list of moves and returns the list with the best moves (worst moves
+	 * are removed)
 	 * 
 	 * @param moves
+	 * @throws RemisException
 	 * @throws IllegalBoardException
 	 */
-	public List<Analyzer> analyzeMoves(List<byte[]> moves,Board board) {
-		Printer.print("Start analyizing.....", Printer.LOGLEVEL_INFO);
-		List<Analyzer> analyzerList = new ArrayList<Analyzer>();
-		List<Analyzer> bestMoves = new ArrayList<Analyzer>();
+	public void start(Board board) throws RemisException {
 
-		Printer.print("ChessMashine: Moves analyed: ", Printer.LOGLEVEL_FINE);
+		startTime = System.currentTimeMillis();
+
+		threadList = new ArrayList<Thread>();
+		analyzerList=new ArrayList<Analyzer>();
+	
+		// get my move list
+		List<byte[]> moves = null;
+		try {
+			moves = board.getMyMoveList();
+			if (moves.size() == 0) {
+				// if no moves possible - remies!
+				throw new RemisException();
+			}
+		} catch (IllegalBoardException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return;
+		}
+
+		Printer.print("Start analyizing " + moves.size()  + " possible moves.....", Printer.LOGLEVEL_INFO);
 		for (byte[] move : moves) {
 			Analyzer a;
 			try {
 				a = new Analyzer(board, move);
+				// a.start();
+
+				Thread t1 = new Thread(a);
+				threadList.add(t1);
+				
+				t1.start();
+
 				if (a.result > Analyzer.KING_LOST) {
 					analyzerList.add(a);
 				}
@@ -74,16 +82,70 @@ public class ChessMashine {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
+
+	}
+
+	/**
+	 *  This method stops all running analyzes threads and returns the best move found so far.
+	 * 
+	 * @return
+	 * @throws RemisException
+	 * @throws IllegalBoardException
+	 * @throws CheckMateException
+	 */
+	public Analyzer stop() throws RemisException, IllegalBoardException,
+			CheckMateException {
+
+		
+		// stop running threads.
+		for (Thread t : threadList) {
+			t.interrupt();
+		}
+
+		// filter best moves....
+		List<Analyzer> bestMoves = filterBestMoves();
+
+		// moves found?
+		if (!(bestMoves.size() > 0)) {
+			throw new CheckMateException();
+		}
+
+		Printer.print(
+				"....." + bestMoves.size() + " seemingly reasonable moves found : "
+						+ (System.currentTimeMillis() - startTime) + "ms",
+				Printer.LOGLEVEL_INFO);
+
+		// randomize a move....
+		int moveNumber = randInt(0, bestMoves.size() - 1);
+
+		Analyzer myAnalyzedMove = bestMoves.get(moveNumber);
+
+		return myAnalyzedMove;
+	}
+
+	/**
+	 * This method test the current running Anaylzers and takes out the best
+	 * moves found so far. Remember- the Analyzer is a backend thread running
+	 * endless
+	 * 
+	 * @return
+	 */
+	private List<Analyzer> filterBestMoves() {
+		Printer.print("ChessMashine: filterBestMoves... ", Printer.LOGLEVEL_FINE);
+		
+		List<Analyzer> bestMoves = new ArrayList<Analyzer>();
+
 		// sort moves...
 		Collections.sort(analyzerList, new AnalyzerComparator());
 
 		// print sorted move list
 		if (Printer.logLevel >= Printer.LOGLEVEL_FINE) {
+			Printer.print("ChessMashine: Analyzer Result=", Printer.LOGLEVEL_FINE);
 			for (Analyzer a : analyzerList) {
-				Printer.print("      : " + Board.moveToString(a.move) + "="
-						+ a.result, Printer.LOGLEVEL_FINE);
+				Printer.print("        " + Board.moveToString(a.move) + "="
+						+ a.result + " (depth=" + a.depth + ")", Printer.LOGLEVEL_FINE);
 			}
 		}
 
@@ -96,7 +158,7 @@ public class ChessMashine {
 				bestMoves.add(a);
 				bestAnalyzer = a;
 				Printer.print("      : " + Board.moveToString(a.move) + "="
-						+ a.result, Printer.LOGLEVEL_FINE);
+						+ a.result+ " (depth=" + a.depth + ")", Printer.LOGLEVEL_FINE);
 			} else {
 				// not more good moves
 
@@ -111,9 +173,6 @@ public class ChessMashine {
 		return bestMoves;
 	}
 
-
-	
-	
 	/**
 	 * Returns a pseudo-random number between min and max, inclusive. The
 	 * difference between min and max can be at most
@@ -140,10 +199,20 @@ public class ChessMashine {
 	}
 
 	
+	/**
+	 * Analyzer Comperator - compare rating and depth. 
+	 * @author rsoika
+	 *
+	 */
 	public class AnalyzerComparator implements Comparator<Analyzer> {
 
 		public int compare(Analyzer a1, Analyzer a2) {
 
+			// if result equals than we sort by depth
+			if (a2.getResult() == a1.getResult())
+				return a2.depth - a1.depth;
+			
+			// sort by result
 			return a2.getResult() - a1.getResult();
 		}
 	}
