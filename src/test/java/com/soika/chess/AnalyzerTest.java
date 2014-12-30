@@ -66,7 +66,7 @@ public class AnalyzerTest {
 			logger.info("start bad move...");
 			// analyze bad move...
 			Analyzer analyzerBad = new Analyzer(board, Board.stringToMove(
-					"C7C5"));
+					"C7C5"),1);
 		
 			
 			Assert.assertTrue((Board.PAWN_YOURS == board.getFigure("D4")));
@@ -74,7 +74,7 @@ public class AnalyzerTest {
 		
 			logger.info("start good move...");
 			// analyse good ove..
-			Analyzer analyzerGood = new Analyzer(board, Board.stringToMove("D7D5"));
+			Analyzer analyzerGood = new Analyzer(board, Board.stringToMove("D7D5"),1);
 			
 			
 			
@@ -131,11 +131,11 @@ public class AnalyzerTest {
 			logger.info("start bad move...");
 			// analyze bad move...
 			Analyzer analyzerBad = new Analyzer(board, Board.stringToMove(
-					"B8A8"));
+					"B8A8"),1);
 		
 			logger.info("start good move...");
 			// analyse good ove..
-			Analyzer analyzerGood = new Analyzer(board, Board.stringToMove("B8C8"));
+			Analyzer analyzerGood = new Analyzer(board, Board.stringToMove("B8C8"),1);
 			Assert.assertTrue(analyzerBad.getResult()<analyzerGood.getResult());
 			
 
@@ -158,23 +158,23 @@ public class AnalyzerTest {
 			// add path
 			Move[] movelist = new Move[3];
 
-			Analyzer analyzer = new Analyzer(board, Board.stringToMove("e2e4"));
+			Analyzer analyzer = new Analyzer(board, Board.stringToMove("e2e4"),1);
 
-			Move amove1 = analyzer.doMove(Board.getFieldIndex("d7"),
+			Move amove1 = analyzer.board.doMove(Board.getFieldIndex("d7"),
 					Board.getFieldIndex("d5"));
 			movelist[0] = amove1;
 			// test pawn on d5
 			Assert.assertTrue((Board.PAWN_ME == analyzer.getBoard().getFigure(
 					"D5")));
 
-			Move amove2 = analyzer.doMove(Board.getFieldIndex("e4"),
+			Move amove2 = analyzer.board.doMove(Board.getFieldIndex("e4"),
 					Board.getFieldIndex("d5"));
 			movelist[1] = amove2;
 			// test pawn on d5
 			Assert.assertTrue((Board.PAWN_YOURS == analyzer.getBoard()
 					.getFigure("D5")));
 
-			Move amove3 = analyzer.doMove(Board.getFieldIndex("d8"),
+			Move amove3 = analyzer.board.doMove(Board.getFieldIndex("d8"),
 					Board.getFieldIndex("d5"));
 			movelist[2] = amove3;
 
@@ -183,9 +183,9 @@ public class AnalyzerTest {
 					"D5")));
 
 			// roll back all moves
-			analyzer.undoMove(amove3);
-			analyzer.undoMove(amove2);
-			analyzer.undoMove(amove1);
+			analyzer.board.undoMove(amove3);
+			analyzer.board.undoMove(amove2);
+			analyzer.board.undoMove(amove1);
 			Assert.assertTrue((Board.QUEEN_ME == analyzer.getBoard().getFigure(
 					"D8")));
 			Assert.assertTrue((Board.PAWN_YOURS == analyzer.getBoard().getFigure(

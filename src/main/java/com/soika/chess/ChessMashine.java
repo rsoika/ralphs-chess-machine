@@ -27,9 +27,16 @@ import com.soika.chess.exceptions.RemisException;
 public class ChessMashine {
 
 	List<Analyzer> analyzerList = null;
-	List<Thread> threadList = null;
+//	List<Thread> threadList = null;
 	long startTime;
+	private int analyzingDepth=1;
 
+	
+	public void setAnalyzingDepth(int analyzingDepth) {
+		this.analyzingDepth = analyzingDepth;
+	}
+
+	
 	/**
 	 * This method starts for each possible move an analyzer. The Analyzer runs
 	 * as a backend tread and tries to find out how good the move is.
@@ -46,7 +53,7 @@ public class ChessMashine {
 
 		startTime = System.currentTimeMillis();
 
-		threadList = new ArrayList<Thread>();
+//		threadList = new ArrayList<Thread>();
 		analyzerList=new ArrayList<Analyzer>();
 	
 		// get my move list
@@ -67,13 +74,13 @@ public class ChessMashine {
 		for (byte[] move : moves) {
 			Analyzer a;
 			try {
-				a = new Analyzer(board, move);
+				a = new Analyzer(board, move,analyzingDepth);
 				// a.start();
 
-				Thread t1 = new Thread(a);
-				threadList.add(t1);
+			//	Thread t1 = new Thread(a);
+			//	threadList.add(t1);
 				
-				t1.start();
+				a.start();
 
 				if (a.result > Analyzer.KING_LOST) {
 					analyzerList.add(a);
@@ -98,10 +105,14 @@ public class ChessMashine {
 	public Analyzer stop() throws RemisException, IllegalBoardException,
 			CheckMateException {
 
-		
+		long countSituations=0;
 		// stop running threads.
-		for (Thread t : threadList) {
+//		for (Thread t : threadList) {
+//			t.interrupt();
+//		}
+		for (Analyzer t : analyzerList) {
 			t.interrupt();
+			countSituations+=t.countSituations;
 		}
 
 		// filter best moves....
@@ -113,8 +124,11 @@ public class ChessMashine {
 		}
 
 		Printer.print(
-				"....." + bestMoves.size() + " seemingly reasonable moves found : "
+				"....." + countSituations + " szeanrios analyzed in "
 						+ (System.currentTimeMillis() - startTime) + "ms",
+				Printer.LOGLEVEL_INFO);
+		Printer.print(
+				"....." + bestMoves.size() + " seemingly reasonable moves found.",
 				Printer.LOGLEVEL_INFO);
 
 		// randomize a move....

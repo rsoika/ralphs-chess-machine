@@ -1,7 +1,5 @@
 package com.soika.chess;
 
-import java.util.logging.Level;
-
 import com.soika.chess.exceptions.IllegalBoardException;
 
 /**
@@ -10,7 +8,7 @@ import com.soika.chess.exceptions.IllegalBoardException;
  *
  */
 public class Printer {
-	static byte logLevel=0;
+	public static byte logLevel=0;
 	
 	public final static byte LOGLEVEL_INFO=0;
 	public final static byte LOGLEVEL_FINE=1;
@@ -125,5 +123,9 @@ public class Printer {
 			return;
 		// logger.info(message);
 		System.out.println(message);
+	}
+	
+	public static void print(String message) {
+		print (message,LOGLEVEL_INFO);;
 	}
 }

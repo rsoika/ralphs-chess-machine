@@ -1,6 +1,7 @@
 package com.soika.chess;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import com.soika.chess.exceptions.IllegalBoardException;
 
@@ -22,15 +23,18 @@ import com.soika.chess.exceptions.IllegalBoardException;
  * @author rsoika
  *
  */
-public class Analyzer implements Runnable {
+public class Analyzer extends Thread { // implements Runnable
 
-	// byte[] setup;
-	Board board;
-//	List<Move[]> paths;
-	int result = KING_LOST;
-	byte[] move;
-	byte depth=0;
 	public final static byte KING_LOST = -88;
+
+	Board board;
+	int result = KING_LOST;
+	int startRating = 0;
+	byte[] move;
+	byte depth = 0;
+	long countSituations=0;
+	
+	private int analyzingDepth=1;
 
 	/**
 	 * Given a board and a move the analyzer compute all possible reactions and
@@ -42,75 +46,188 @@ public class Analyzer implements Runnable {
 	 * @param amove
 	 * @throws IllegalBoardException
 	 */
-	public Analyzer(final Board aboard, byte[] amove)
+	public Analyzer(final Board aboard, byte[] amove,int analyzingDepth)
 			throws IllegalBoardException {
 		super();
 
+		this.analyzingDepth = analyzingDepth;
 		this.move = amove;
 		result = 0;
-		//paths = new ArrayList<Move[]>();
+		// paths = new ArrayList<Move[]>();
 
 		// clone board...
 		this.board = new Board(aboard.direction);
 		this.board.setup = aboard.setup.clone();
 
-		doMove(amove[0], amove[1]);
-	
-	
-		
-	//	run();
-		
-		
-		
+		board.doMove(amove[0], amove[1]);
+
 	}
-	
-	
-	
-	
+
+
 	/**
-	 * Isolated code for analyze process 
-	 * @throws IllegalBoardException 
+	 * Isolated code for analyze process
+	 * 
+	 * @throws IllegalBoardException
 	 */
-	@Override 
+	@Override
 	public void run() {
+
+		depth = 0;
+		startRating = rateBoard();
+
+		// now start computing all possible reactions and give each reaction a
+		// rating
+
+		while (depth < analyzingDepth) {
+
+			if (Printer.logLevel >= Printer.LOGLEVEL_FINE) {
+
+				Printer.print("Analyzer " + Board.moveToString(this.move)
+						+ " started depth=" + depth + " startrating="
+						+ startRating, Printer.LOGLEVEL_FINE);
+			}
+
+			try {
+				result = dummyRun(true, depth, startRating);
+
+				if (Printer.logLevel >= Printer.LOGLEVEL_FINE) {
+
+					Printer.print("Analyzer " + Board.moveToString(this.move)
+							+ " finished depth=" + depth + " new rating="
+							+ result, Printer.LOGLEVEL_FINE);
+				}
+
+			} catch (IllegalBoardException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// if we lost king we can stop
+			if (result <= KING_LOST) {
+				// we should give up?
+				result = KING_LOST;
+				break;
+			}
+			depth++;
+		}
+
+		Printer.print("Analyzer finished", Printer.LOGLEVEL_FINEST);
+	}
+
+	/**
+	 * Simuliert zugfolgen bis zu einem maxlevel. Nach erreichen des Maxlevels
+	 * wird die Boardbewertung aufgerufen.
+	 * 
+	 * maxlevel = 0 - nur ein run
+	 * 
+	 * maxlevel = 1 - 1 x recusive
+	 */
+	private int dummyRun(boolean yours, int maxlevel, int startResult)
+			throws IllegalBoardException {
+
+		int worsestResult = startResult;
+		List<byte[]> moveList = null;
+		if (yours)
+			moveList = board.getYoursMoveList();
+		else
+			moveList = board.getMyMoveList();
+
+		for (int i = 0; i < moveList.size(); i++) {
+			// now compute next half move for each move....
+			Move yourMove = board
+					.doMove(moveList.get(i)[0], moveList.get(i)[1]);
+
+			if (0 < maxlevel) {
+				// recusive call
+				dummyRun(!yours, maxlevel - 1, startResult);
+			} else {
+				// rate board
+				int currentresult = rateBoard();
+
+				if (currentresult < startResult) {
+					
+					if (currentresult<worsestResult)
+						worsestResult = currentresult;
+
+				}
+				// debug("e4d5", yourMove, currentresult);
+				// debug("d8d5", yourMove, currentresult);
+			}
+			board.undoMove(yourMove);
+
+		}
+
+		return worsestResult;
+
+	}
+
+	private boolean debug(String move, Move amove, int currentresult) {
+
+		try {
+			if (Board.stringToMove(move)[0] == amove.from
+					&& Board.stringToMove(move)[1] == amove.to) {
+				// Printer.print("+++ Analyzer Debug "+move,
+				// Printer.LOGLEVEL_INFO);
+
+				Printer.print("+++ Analyzer Debug d8d5: currentrating="
+						+ currentresult + " complete result=" + result
+						+ " current depth=" + depth, Printer.LOGLEVEL_INFO);
+
+				return true;
+
+			}
+		} catch (IllegalBoardException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Isolated code for analyze process
+	 * 
+	 * @throws IllegalBoardException
+	 */
+	public void runOld() {
+
 		Printer.print("Analyzer started", Printer.LOGLEVEL_FINEST);
 		// now start computing all possible reactions and give each reaction a
 		// rating
-		
-//		 for ( int i = 0; i < 200; i++ ) {
-//			 Date d= new java.util.Date();
-//		    if (d!=null)  System.out.print("." );
-//		 }
-		 
-		
+
 		List<byte[]> moveList;
 		try {
 			moveList = board.getYoursMoveList();
 		} catch (IllegalBoardException e) {
-			Printer.print("Analyzer error analyzing move list: "+e.getMessage(),
+			Printer.print(
+					"Analyzer error analyzing move list: " + e.getMessage(),
 					Printer.LOGLEVEL_INFO);
 			e.printStackTrace();
 			return;
 		}
-		Printer.print("Analyzer: computing possible reactions...",
-				Printer.LOGLEVEL_FINEST);
+		Printer.print("Analyzer: computing " + moveList.size()
+				+ " possible reactions...", Printer.LOGLEVEL_FINEST);
 
 		// now play each move and rate it.....
 		for (int i = 0; i < moveList.size(); i++) {
 			// now compute next half move for each move....
-			Move yourMove = doMove(moveList.get(i)[0], moveList.get(i)[1]);
+			Move yourMove = board
+					.doMove(moveList.get(i)[0], moveList.get(i)[1]);
 			// and now rate the new board....
 			int currentresult = rateBoard();
 			// Log result
-			String sMove = Board.moveToString(moveList.get(i));
-			Printer.print("Analyzer: " + sMove + ": rating =" + currentresult,
-					Printer.LOGLEVEL_FINEST);
+			if (Printer.logLevel >= Printer.LOGLEVEL_FINEST) {
+				String sMove = Board.moveToString(moveList.get(i));
+				Printer.print("Analyzer: " + sMove + ": rating ="
+						+ currentresult, Printer.LOGLEVEL_FINEST);
+			}
 
 			if (currentresult < result)
 				result = currentresult;
 
 			// finally we undo the move to analyze the next one...
-			undoMove(yourMove);
+			board.undoMove(yourMove);
 
 			// if we lost king we can stop
 			if (result < KING_LOST) {
@@ -118,16 +235,10 @@ public class Analyzer implements Runnable {
 				result = KING_LOST;
 				break;
 			}
-
 		}
 		depth++;
 		Printer.print("Analyzer finished", Printer.LOGLEVEL_FINEST);
 	}
-	
-	
-	
-	
-	
 
 	public Board getBoard() {
 		return board;
@@ -147,56 +258,6 @@ public class Analyzer implements Runnable {
 	}
 
 	/**
-	 * Plays a move on the board and returns the Move Object containing the move
-	 * and target figure
-	 * 
-	 * @param move
-	 */
-	Move doMove(byte from, byte to) {
-		Move move = new Move(board, from, to);
-		board.move(from, to);
-		return move;
-	}
-
-	/**
-	 * plays a path of moves on the board
-	 * 
-	 * @param path
-	 *            - array of moves to be done
-	 */
-//	public void doMovePath(Move[] path) {
-//
-//		for (Move amove : path) {
-//			if (amove != null)
-//				doMove(amove.from, amove.to);
-//			else
-//				break;
-//		}
-//
-//	}
-
-	/**
-	 * reverts a path of moves on the board. (restores also a hit figure)
-	 */
-//	public void undoMovePath(Move[] path) {
-//		// revert board;
-//		for (int i = path.length; --i >= 0;) {
-//			if (path[i] != null)
-//				undoMove(path[i]);
-//			else
-//				continue;
-//		}
-//	}
-
-	/**
-	 * reverts a move on the board. (restores also a hit figure)
-	 */
-	void undoMove(Move move) {
-		board.move(move.to, move.from);
-		board.setup[move.to] = move.targetFigure;
-	}
-
-	/**
 	 * This method rates the current board
 	 * 
 	 * not very tricky so far..
@@ -210,6 +271,7 @@ public class Analyzer implements Runnable {
 
 		}
 
+		countSituations++;
 		return result;
 	}
 

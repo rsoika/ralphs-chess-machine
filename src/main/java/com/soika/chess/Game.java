@@ -123,14 +123,14 @@ public class Game {
 				try {
 					chessMashine.start(board);
 
-					 try {
-					 Printer.print("let me think just a second....", Printer.LOGLEVEL_INFO);
-					 Thread.sleep(1000);
-					 } catch(InterruptedException ex) {
-					 Thread.currentThread().interrupt();
-					 }
+					try {
+						Printer.print("let me think just a second....",
+								Printer.LOGLEVEL_INFO);
+						Thread.sleep(1000);
+					} catch (InterruptedException ex) {
+						Thread.currentThread().interrupt();
+					}
 					myAnalyzedMove = chessMashine.stop();
-
 
 					board.move(myAnalyzedMove.getMove()[0],
 							myAnalyzedMove.getMove()[1]);
@@ -139,7 +139,8 @@ public class Game {
 							"               My move : "
 									+ Board.moveToString(myAnalyzedMove
 											.getMove()) + "  (Rating="
-									+ myAnalyzedMove.getResult() + ")",
+									+ myAnalyzedMove.getResult() + " Depth="
+									+ myAnalyzedMove.depth + ")",
 							Printer.LOGLEVEL_INFO);
 
 				} catch (RemisException e) {

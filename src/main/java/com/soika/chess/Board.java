@@ -183,6 +183,23 @@ public class Board {
 		move(getFieldIndex(from), getFieldIndex(to));
 	}
 
+	
+	/**
+	 * reverts a move on the board. (restores also a hit figure)
+	 */
+	public void undoMove(Move move) {
+		move(move.to, move.from);
+		setup[move.to] = move.targetFigure;
+	}
+	
+	public Move doMove(byte from, byte to) {
+		Move move = new Move(this, from, to);
+		move(from, to);
+		return move;
+	}
+
+	
+	
 	/**
 	 * Places a figure on the board. The field is defined by a string by a char
 	 * A-H and a number 1-8
