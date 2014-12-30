@@ -126,7 +126,7 @@ public class Game {
 					try {
 						Printer.print("let me think just a second....",
 								Printer.LOGLEVEL_INFO);
-						Thread.sleep(2000);
+						Thread.sleep(4000);
 					} catch (InterruptedException ex) {
 						Thread.currentThread().interrupt();
 					}

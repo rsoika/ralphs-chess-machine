@@ -1,5 +1,6 @@
 package com.soika.chess;
 
+import java.lang.Thread.State;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -94,6 +95,7 @@ public class ChessMashine {
 
 		}
 
+		
 	}
 
 	/**
@@ -108,13 +110,21 @@ public class ChessMashine {
 			CheckMateException {
 
 		long countSituations=0;
-		// stop running threads.
-//		for (Thread t : threadList) {
-//			t.interrupt();
-//		}
+	
+		boolean bAllFinished=true;
 		for (Analyzer t : analyzerList) {
+			
+			if (t.isAlive()) {
 			t.interrupt();
+			bAllFinished=false;
+			}
 			countSituations+=t.countSituations;
+		}
+		
+		if (!bAllFinished) {
+			Printer.print("** Oh! ich war noch nicht fertig :-((", Printer.LOGLEVEL_INFO);
+			
+			
 		}
 
 		// filter best moves....
