@@ -57,7 +57,7 @@ public class Game {
 	public void play() {
 
 		ChessMashine chessMashine = new ChessMashine();
-
+		chessMashine.setAnalyzingDepth(2);
 		while (true) {
 			System.out.print("Please enter your move : ");
 			String sMove = userInput.nextLine();
@@ -102,7 +102,7 @@ public class Game {
 			try {
 				moveFrom = Board.getFieldIndex(sMove.substring(0, 2));
 				moveTo = Board.getFieldIndex(sMove.substring(2));
-				if (!Board.isValidMove(board.getYoursMoveList(), moveFrom,
+				if (!Board.isValidMove(board.getMoveList(false), moveFrom,
 						moveTo)) {
 					Printer.print("Illegal move!", Printer.LOGLEVEL_INFO);
 					continue;
@@ -126,7 +126,7 @@ public class Game {
 					try {
 						Printer.print("let me think just a second....",
 								Printer.LOGLEVEL_INFO);
-						Thread.sleep(1000);
+						Thread.sleep(2000);
 					} catch (InterruptedException ex) {
 						Thread.currentThread().interrupt();
 					}

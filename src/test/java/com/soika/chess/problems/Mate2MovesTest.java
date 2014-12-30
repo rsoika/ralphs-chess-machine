@@ -92,12 +92,12 @@ public class Mate2MovesTest {
 
 			// Now analyze 2 move => expected G5E3
 			chessMashine = new ChessMashine();
-			chessMashine.setAnalyzingDepth(2);
+			chessMashine.setAnalyzingDepth(3);
 			chessMashine.start(board);
 			try {
 				Printer.print("let me think just a second....",
 						Printer.LOGLEVEL_INFO);
-				Thread.sleep(1000);
+				Thread.sleep(2000);
 			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
@@ -141,7 +141,7 @@ public class Mate2MovesTest {
 	 * http://www.schach-tipps.de/schachtraining/taktik/schachaufgaben
 	 */
 	@Test
-	public void testProblem1SingleAnalyzer() {
+	public void testProblem1SingleAnalyzerC6C4() {
 
 		try {
 			board.placeFigure("C3", Board.PAWN_YOURS);
@@ -160,13 +160,84 @@ public class Mate2MovesTest {
 
 			Printer.print("Debugging C6C4...");
 			Analyzer a;
-
+			Printer.logLevel = Printer.LOGLEVEL_FINEST;
 			a = new Analyzer(board, Board.stringToMove("C6C4"), 1);
 
 			a.start();
 			a.join();
 
-			Assert.assertTrue(a.getResult() > 0);
+			Assert.assertTrue(a.getResult() == 2);
+
+		} catch (IllegalBoardException e) {
+			fail();
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+
+			e.printStackTrace();
+			fail();
+		}
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 *
+	 * <code>
+	  ♔♕♖♗♘♙♚♛♜♝♞♟
+	   ┌───────────────┐
+	 8 │               │
+	 7 │    ♚          │
+	 6 │    ♛     ♟    │
+	 5 │            ♝  │
+	 4 │    ♖ ♔ ♙   ♞  │
+	 3 │    ♙ ♘        │
+	 2 │               │
+	 1 │               │
+	   └───────────────┘
+	    A B C D E F G H
+	 * </code>
+	 * 
+	 * http://www.schach-tipps.de/schachtraining/taktik/schachaufgaben
+	 */
+	@Test
+	public void testProblem1SingleAnalyzerG5E3() {
+
+		try {
+			board.placeFigure("C3", Board.PAWN_YOURS);
+			board.placeFigure("E4", Board.PAWN_YOURS);
+			board.placeFigure("D3", Board.KNIGHT_YOURS);
+			board.placeFigure("C4", Board.ROOK_YOURS);
+			board.placeFigure("D4", Board.KING_YOURS);
+
+			board.placeFigure("F6", Board.PAWN_ME);
+			board.placeFigure("G5", Board.BISHOP_ME);
+			board.placeFigure("G4", Board.KNIGHT_ME);
+			board.placeFigure("C6", Board.QUEEN_ME);
+			board.placeFigure("C7", Board.KING_ME);
+
+			Printer.printBoard(board, Printer.LOGLEVEL_INFO);
+
+			Printer.print("Debugging G5E3...");
+			Analyzer a;
+			Printer.logLevel = Printer.LOGLEVEL_FINEST;
+			a = new Analyzer(board, Board.stringToMove("G5E3"), 2);
+
+			a.start();
+			a.join();
+
+			Assert.assertTrue(a.getResult() == 133);
 
 		} catch (IllegalBoardException e) {
 			fail();

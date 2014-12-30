@@ -34,6 +34,8 @@ public class ChessMashine {
 	
 	public void setAnalyzingDepth(int analyzingDepth) {
 		this.analyzingDepth = analyzingDepth;
+		
+		Printer.print("ChessMashine analyzing depth="+analyzingDepth, Printer.LOGLEVEL_INFO);
 	}
 
 	
@@ -59,7 +61,7 @@ public class ChessMashine {
 		// get my move list
 		List<byte[]> moves = null;
 		try {
-			moves = board.getMyMoveList();
+			moves = board.getMoveList(true);
 			if (moves.size() == 0) {
 				// if no moves possible - remies!
 				throw new RemisException();

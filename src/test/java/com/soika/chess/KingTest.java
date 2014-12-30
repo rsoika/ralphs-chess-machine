@@ -40,7 +40,7 @@ public class KingTest {
 	 7│               │
 	 6│               │
 	 5│x x x          │
-	 4│x ♛ x          │
+	 4│x ♚ x          │
 	 3│x x x          │
 	 2│               │
 	 1│               │
@@ -90,7 +90,7 @@ public class KingTest {
 	 7│               │
 	 6│               │
 	 5│x x ♖          │
-	 4│x ♛ ♝          │
+	 4│x ♚ ♝          │
 	 3│x x x          │
 	 2│               │
 	 1│               │
@@ -132,4 +132,10 @@ public class KingTest {
 	}
 	
 
+	
+	
+	
+	
+	
+	
 }

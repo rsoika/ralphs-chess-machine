@@ -49,7 +49,7 @@ public class AnalyzerTest {
 	 * 
 	 * This test tests if after D2D4, C7C5 is a good or bad move
 	 */
-	@Test
+	//@Test
 	public void testSimple_D2D4_C7C5() {
 
 		try {
@@ -115,7 +115,7 @@ public class AnalyzerTest {
 	 * 
 	 * This test tests if after D2D4, C7C5 is a good or bad move
 	 */
-	@Test
+	//@Test
 	public void testSimple_KingTest() {
 
 		try {
@@ -134,7 +134,7 @@ public class AnalyzerTest {
 					"B8A8"),1);
 		
 			logger.info("start good move...");
-			// analyse good ove..
+			// analyse good move..
 			Analyzer analyzerGood = new Analyzer(board, Board.stringToMove("B8C8"),1);
 			Assert.assertTrue(analyzerBad.getResult()<analyzerGood.getResult());
 			

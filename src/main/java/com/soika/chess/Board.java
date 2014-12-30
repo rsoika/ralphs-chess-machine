@@ -60,8 +60,8 @@ public class Board {
 	public final static byte DIRECTION_WHITE = 0;
 	public final static byte DIRECTION_BLACK = 1;
 
-	byte[] setup = null;
-	byte direction = 0;
+	public byte[] setup = null;
+	public byte direction = 0;
 
 	public Board(byte adirection) {
 		direction = adirection;
@@ -183,23 +183,22 @@ public class Board {
 		move(getFieldIndex(from), getFieldIndex(to));
 	}
 
-	
 	/**
 	 * reverts a move on the board. (restores also a hit figure)
 	 */
 	public void undoMove(Move move) {
+		if (move == null)
+			return;
 		move(move.to, move.from);
 		setup[move.to] = move.targetFigure;
 	}
-	
+
 	public Move doMove(byte from, byte to) {
 		Move move = new Move(this, from, to);
 		move(from, to);
 		return move;
 	}
 
-	
-	
 	/**
 	 * Places a figure on the board. The field is defined by a string by a char
 	 * A-H and a number 1-8
@@ -293,19 +292,19 @@ public class Board {
 	}
 
 	/**
-	 * This method computes all possible moves on the board
+	 * This method computes all possible moves on the board for me or your moves
 	 * 
 	 * @return
 	 * @throws IllegalBoardException
 	 */
-	public List<byte[]> getMyMoveList() throws IllegalBoardException {
+	public List<byte[]> getMoveList(boolean me) throws IllegalBoardException {
 		List<byte[]> result = new ArrayList<byte[]>();
 
 		// test all fields...
 		for (byte i = 0; i < 64; i++) {
 			byte figureType = setup[i];
 			// my figure?
-			if (figureType > 0) {
+			if ((me && figureType > 0) || (!me && figureType < 0)) {
 				Figure figure = createFigure(i);
 				// add all moves into the move list....
 				List<Byte> moves = figure.getMoves();
@@ -313,7 +312,11 @@ public class Board {
 					byte[] amove = new byte[2];
 					amove[0] = i;
 					amove[1] = move;
-					result.add(amove);
+
+					// before we can add this move we need to check if
+					// the my king is checked
+					if (!isKingCheck(amove))
+						result.add(amove);
 				}
 			}
 		}
@@ -322,30 +325,69 @@ public class Board {
 	}
 
 	/**
-	 * This method computes all possible moves on the board
+	 * Returns true if the given move checks the own king
 	 * 
+	 * @param move
 	 * @return
 	 * @throws IllegalBoardException
 	 */
-	public List<byte[]> getYoursMoveList() throws IllegalBoardException {
-		List<byte[]> result = new ArrayList<byte[]>();
+	private boolean isKingCheck(byte[] move) throws IllegalBoardException {
+		boolean result = false;
+		Move testMove = null;
 
-		// test all fields...
+		byte myFigure = this.getFigure(move[0]);
+		boolean me = myFigure > 0;
+
+		// now simulate the mvoe
+		testMove = this.doMove(move[0], move[1]);
+
+		byte kingPos = -1;
+		// find my king
 		for (byte i = 0; i < 64; i++) {
-			byte figureType = setup[i];
-			// my figure?
-			if (figureType < 0) {
-				Figure figure = createFigure(i);
-				// add all moves into the move list....
-				List<Byte> moves = figure.getMoves();
-				for (byte move : moves) {
-					byte[] amove = new byte[2];
-					amove[0] = i;
-					amove[1] = move;
-					result.add(amove);
-				}
+			if (me && this.setup[i] == Board.KING_ME) {
+				kingPos = i;
+				break;
+			}
+			if (!me && this.setup[i] == Board.KING_YOURS) {
+				kingPos = i;
+				break;
 			}
 		}
+
+		if (kingPos == -1)
+			throw new IllegalBoardException();
+		// myKing = this.getFigure(move[0], move[1]);
+		/*
+		 * test all opponent moves and test if one strikes the king
+		 */
+		// test all fields...
+		for (byte i = 0; i < 64; i++) {
+			byte figureType = this.setup[i];
+
+			if (figureType == 0)
+				continue;
+
+			boolean bOpponent = false;
+			if ((me && figureType < 0) || (!me && figureType > 0))
+				bOpponent = true;
+
+			if (bOpponent) {
+				Figure figure;
+
+				figure = this.createFigure(i);
+
+				// add all moves into the move list....
+				List<Byte> opponentMoves = figure.getMoves();
+
+				if (opponentMoves.contains(kingPos)) {
+					result = true; // ! illegal move
+					break;
+				}
+
+			}
+
+		}
+		this.undoMove(testMove);
 
 		return result;
 	}
@@ -453,11 +495,91 @@ public class Board {
 	 * 
 	 * @param move
 	 * @return
-	 * @throws IllegalBoardException 
+	 * @throws IllegalBoardException
 	 */
-	public static byte[] stringToMove(String smove) throws IllegalBoardException {
+	public static byte[] stringToMove(String smove)
+			throws IllegalBoardException {
 		byte[] result = { getFieldIndex(smove.substring(0, 2)),
 				getFieldIndex(smove.substring(2, 4)) };
 		return result;
+	}
+	
+	
+	
+	/**
+	 * This method rates the current board
+	 * 
+	 * not very tricky so far..
+	 * 
+	 * @return
+	 */
+	public int rateBoard() {
+		int result = 0;
+		for (byte i = 0; i < 64; i++) {
+			result += rateFigure(this.getFigure(i));
+
+		}
+
+		
+		return result;
+	}
+	
+	
+	/**
+	 * This method rates a single figure
+	 * 
+	 * not very tricky so far....
+	 * 
+	 * @return
+	 */
+	private static byte rateFigure(byte figure) {
+
+		byte figureRating = 0;
+
+		switch (figure) {
+		case Board.ROOK_ME:
+			figureRating = 5;
+			break;
+		case Board.KNIGHT_ME:
+			figureRating = 3;
+			break;
+		case Board.BISHOP_ME:
+			figureRating = 3;
+			break;
+		case Board.QUEEN_ME:
+			figureRating = 9;
+			break;
+		case Board.KING_ME:
+			figureRating = 127;
+			break;
+		case Board.PAWN_ME:
+			figureRating = 1;
+			break;
+
+		case Board.ROOK_YOURS:
+			figureRating = -5;
+			break;
+		case Board.KNIGHT_YOURS:
+			figureRating = -3;
+			break;
+		case Board.BISHOP_YOURS:
+			figureRating = -3;
+			break;
+		case Board.QUEEN_YOURS:
+			figureRating = -9;
+			break;
+		case Board.KING_YOURS:
+			figureRating = -127;
+			break;
+		case Board.PAWN_YOURS:
+			figureRating = -1;
+			break;
+
+		default:
+			// no op
+		}
+
+		return figureRating;
+
 	}
 }

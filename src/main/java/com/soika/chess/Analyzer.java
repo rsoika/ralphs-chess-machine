@@ -1,5 +1,6 @@
 package com.soika.chess;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -26,15 +27,18 @@ import com.soika.chess.exceptions.IllegalBoardException;
 public class Analyzer extends Thread { // implements Runnable
 
 	public final static byte KING_LOST = -88;
+	public final static byte KING_WON = 88;
 
 	Board board;
 	int result = KING_LOST;
 	int startRating = 0;
 	byte[] move;
 	byte depth = 0;
-	long countSituations=0;
-	
-	private int analyzingDepth=1;
+	long countSituations = 0;
+
+	List<byte[]> path = null;
+
+	private int analyzingDepth = 1;
 
 	/**
 	 * Given a board and a move the analyzer compute all possible reactions and
@@ -46,7 +50,7 @@ public class Analyzer extends Thread { // implements Runnable
 	 * @param amove
 	 * @throws IllegalBoardException
 	 */
-	public Analyzer(final Board aboard, byte[] amove,int analyzingDepth)
+	public Analyzer(final Board aboard, byte[] amove, int analyzingDepth)
 			throws IllegalBoardException {
 		super();
 
@@ -63,7 +67,6 @@ public class Analyzer extends Thread { // implements Runnable
 
 	}
 
-
 	/**
 	 * Isolated code for analyze process
 	 * 
@@ -73,7 +76,7 @@ public class Analyzer extends Thread { // implements Runnable
 	public void run() {
 
 		depth = 0;
-		startRating = rateBoard();
+		startRating = board.rateBoard();
 
 		// now start computing all possible reactions and give each reaction a
 		// rating
@@ -88,6 +91,10 @@ public class Analyzer extends Thread { // implements Runnable
 			}
 
 			try {
+
+				path = new ArrayList<byte[]>();
+				path.add(move);
+
 				result = dummyRun(true, depth, startRating);
 
 				if (Printer.logLevel >= Printer.LOGLEVEL_FINE) {
@@ -105,9 +112,15 @@ public class Analyzer extends Thread { // implements Runnable
 			// if we lost king we can stop
 			if (result <= KING_LOST) {
 				// we should give up?
-				result = KING_LOST;
 				break;
 			}
+
+			// if we won king we can stop
+			if (result >= KING_WON) {
+				// we should give up?
+				break;
+			}
+
 			depth++;
 		}
 
@@ -122,42 +135,70 @@ public class Analyzer extends Thread { // implements Runnable
 	 * 
 	 * maxlevel = 1 - 1 x recusive
 	 */
-	private int dummyRun(boolean yours, int maxlevel, int startResult)
+	private int dummyRun(final boolean yours,final int maxlevel,final int startResult)
 			throws IllegalBoardException {
 
-		int worsestResult = startResult;
+		int finalResult = startResult;
 		List<byte[]> moveList = null;
-		if (yours)
-			moveList = board.getYoursMoveList();
-		else
-			moveList = board.getMyMoveList();
+		moveList = board.getMoveList(!yours);
 
 		for (int i = 0; i < moveList.size(); i++) {
 			// now compute next half move for each move....
+
+			path.add(moveList.get(i));
 			Move yourMove = board
 					.doMove(moveList.get(i)[0], moveList.get(i)[1]);
 
 			if (0 < maxlevel) {
 				// recusive call
-				dummyRun(!yours, maxlevel - 1, startResult);
+
+				int currentresult  = dummyRun(!yours, maxlevel-1, startResult);
+
+				if (currentresult<startResult && currentresult<finalResult) {
+					finalResult=currentresult;
+				}
+				
+				Printer.print("Analyzer zwischenresult=" + finalResult,
+						Printer.LOGLEVEL_FINEST);
 			} else {
 				// rate board
-				int currentresult = rateBoard();
+				
+//				if ("C3E4".equals(Board.moveToString(moveList.get(i)))) {
+//					System.out.println("Hallo");
+//					Printer.printBoard(board, Printer.LOGLEVEL_INFO);
+//					
+//				}
+				
+				
+				int currentresult = board.rateBoard();
+				countSituations++;
 
-				if (currentresult < startResult) {
-					
-					if (currentresult<worsestResult)
-						worsestResult = currentresult;
+				if (Printer.logLevel >= Printer.LOGLEVEL_FINEST) {
+
+					String sPath = "";
+					for (byte[] amove : path) {
+						sPath += " " + Board.moveToString(amove);
+					}
+					Printer.print("Analyzer " + sPath + " ...... Rating="
+							+ currentresult, Printer.LOGLEVEL_FINEST);
 
 				}
-				// debug("e4d5", yourMove, currentresult);
-				// debug("d8d5", yourMove, currentresult);
+
+				
+				if (currentresult<startResult && currentresult<finalResult) {
+					finalResult=currentresult;
+				}
+				
 			}
+
+			// remove from path
+			path.remove(path.size() - 1);
+
 			board.undoMove(yourMove);
 
 		}
 
-		return worsestResult;
+		return finalResult;
 
 	}
 
@@ -190,6 +231,7 @@ public class Analyzer extends Thread { // implements Runnable
 	 * 
 	 * @throws IllegalBoardException
 	 */
+	@Deprecated
 	public void runOld() {
 
 		Printer.print("Analyzer started", Printer.LOGLEVEL_FINEST);
@@ -198,7 +240,7 @@ public class Analyzer extends Thread { // implements Runnable
 
 		List<byte[]> moveList;
 		try {
-			moveList = board.getYoursMoveList();
+			moveList = board.getMoveList(false);
 		} catch (IllegalBoardException e) {
 			Printer.print(
 					"Analyzer error analyzing move list: " + e.getMessage(),
@@ -215,7 +257,8 @@ public class Analyzer extends Thread { // implements Runnable
 			Move yourMove = board
 					.doMove(moveList.get(i)[0], moveList.get(i)[1]);
 			// and now rate the new board....
-			int currentresult = rateBoard();
+			int currentresult = board.rateBoard();
+			
 			// Log result
 			if (Printer.logLevel >= Printer.LOGLEVEL_FINEST) {
 				String sMove = Board.moveToString(moveList.get(i));
@@ -257,79 +300,7 @@ public class Analyzer extends Thread { // implements Runnable
 		return result;
 	}
 
-	/**
-	 * This method rates the current board
-	 * 
-	 * not very tricky so far..
-	 * 
-	 * @return
-	 */
-	private int rateBoard() {
-		int result = 0;
-		for (byte i = 0; i < 64; i++) {
-			result += rateFigure(board.getFigure(i));
+	
 
-		}
-
-		countSituations++;
-		return result;
-	}
-
-	/**
-	 * This method rates a single figure
-	 * 
-	 * not very tricky so far....
-	 * 
-	 * @return
-	 */
-	private byte rateFigure(byte figure) {
-
-		byte figureRating = 0;
-
-		switch (figure) {
-		case Board.ROOK_ME:
-			figureRating = 5;
-			break;
-		case Board.KNIGHT_ME:
-			figureRating = 3;
-			break;
-		case Board.BISHOP_ME:
-			figureRating = 3;
-			break;
-		case Board.QUEEN_ME:
-			figureRating = 9;
-			break;
-		case Board.KING_ME:
-			figureRating = 127;
-			break;
-		case Board.PAWN_ME:
-			figureRating = 1;
-			break;
-
-		case Board.ROOK_YOURS:
-			figureRating = -5;
-			break;
-		case Board.KNIGHT_YOURS:
-			figureRating = -3;
-			break;
-		case Board.BISHOP_YOURS:
-			figureRating = -3;
-			break;
-		case Board.QUEEN_YOURS:
-			figureRating = -9;
-			break;
-		case Board.KING_YOURS:
-			figureRating = -127;
-			break;
-		case Board.PAWN_YOURS:
-			figureRating = -1;
-			break;
-
-		default:
-			// no op
-		}
-
-		return figureRating;
-
-	}
+	
 }

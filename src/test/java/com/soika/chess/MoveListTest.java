@@ -35,14 +35,14 @@ public class MoveListTest {
 	  ♔♕♖♗♘♙♚♛♜♝♞♟
 	   A B C D E F G H
 	  ┌───────────────┐
-	 8│               │
+	 8│        ♚      │
 	 7│               │
 	 6│  x   x        │
 	 5│x       x      │
 	 4│    ♞          │
 	 3│x       x      │
 	 2│  x   x       ♟│
-	 1│               │
+	 1│        ♔      │
 	  └───────────────┘
 	   A B C D E F G H
 
@@ -55,10 +55,13 @@ public class MoveListTest {
 		try {
 			board.placeFigure("C4", Board.KNIGHT_ME);
 			board.placeFigure("H2", Board.PAWN_ME);
+			board.placeFigure("E8", Board.KING_ME);
+			board.placeFigure("E1", Board.KING_YOURS);
+			
 
-			List<byte[]> moveList = board.getMyMoveList();
+			List<byte[]> moveList = board.getMoveList(true);
 
-			Assert.assertTrue(moveList.size() == 10);
+			Assert.assertTrue(moveList.size() == 15);
 			Assert.assertTrue(Board.isValidMove(moveList, 26, 9));
 
 			Assert.assertFalse(Board.isValidMove(moveList, 26, 10));
@@ -98,7 +101,7 @@ public class MoveListTest {
 			board = new Board(Board.DIRECTION_BLACK);
 			board.initNewGame();
 
-			List<byte[]> myMoveList = board.getMyMoveList();
+			List<byte[]> myMoveList = board.getMoveList(true);
 
 			Assert.assertTrue(myMoveList.size() == 20);
 
@@ -112,7 +115,7 @@ public class MoveListTest {
 					Board.getFieldIndex("B8"), Board.getFieldIndex("C6")));
 
 			// test your list...
-			List<byte[]> yoursMoveList = board.getYoursMoveList();
+			List<byte[]> yoursMoveList = board.getMoveList(false);
 			Assert.assertTrue(yoursMoveList.size() == 20);
 			// test your pawn
 			Assert.assertTrue(Board.isValidMove(yoursMoveList,
@@ -124,6 +127,49 @@ public class MoveListTest {
 			Assert.assertTrue(Board.isValidMove(yoursMoveList,
 					Board.getFieldIndex("B1"), Board.getFieldIndex("C3")));
 
+		} catch (IllegalBoardException e) {
+			fail();
+			e.printStackTrace();
+		}
+
+	}
+
+	
+	
+	
+	
+	/**
+	 * <code>
+	  ♔♕♖♗♘♙♚♛♜♝♞♟
+	   A B C D E F G H
+	  ┌───────────────┐
+	 8│♚              │
+	 7│              ♖│
+	 6│               │
+	 5│               │
+	 4│               │
+	 3│               │
+	 2│               │
+	 1│♖              │
+	  └───────────────┘
+	   A B C D E F G H
+
+	   C4
+     * </code>
+	 */
+	@Test
+	public void testCheck() {
+
+		try {
+			board.placeFigure("A8", Board.KING_ME);
+			board.placeFigure("A1", Board.ROOK_YOURS);
+			board.placeFigure("H7", Board.ROOK_YOURS);
+
+			// get my movelist
+			List<byte[]> moveList = board.getMoveList(true);
+
+			Assert.assertEquals(1,moveList.size());
+			
 		} catch (IllegalBoardException e) {
 			fail();
 			e.printStackTrace();
